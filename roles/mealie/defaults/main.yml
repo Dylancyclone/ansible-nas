@@ -12,6 +12,7 @@ mealie_group_id: "1000"
 # network
 mealie_hostname: "mealie"
 mealie_port: "9925"
+mealie_api_port: "9926"
 
 # docker
 mealie_container_name: "mealie"
