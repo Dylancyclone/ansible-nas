@@ -20,10 +20,22 @@
   [entryPoints.traefik]
     address = ":{{ traefik_port_ui }}"
 
+[tls.stores.default.defaultCertificate]
+  certFile = "/etc/traefik/lathrumpubkey.pem"
+  keyFile = "/etc/traefik/lathrumprivkey.pem"
+
+[[tls.certificates]]
+  certFile = "/etc/traefik/lathrumpubkey.pem"
+  keyFile = "/etc/traefik/lathrumprivkey.pem"
+  stores = ["default"]
+
 [providers]
   providersThrottleDuration = "2s"
   [providers.docker]
     exposedbydefault = false
+  [providers.file]
+    filename = "/etc/traefik/tls-certs.toml"
+    watch = true  
 
 [api]
   insecure = true
@@ -34,16 +46,5 @@
 
 [ping]
   terminatingStatusCode = 0
-
-[certificatesResolvers]
-  [certificatesResolvers.letsencrypt]
-    [certificatesResolvers.letsencrypt.acme]
-      email = "{{ ansible_nas_email }}"
-      storage = "/letsencrypt/acme.json"
-      caserver = "{{ traefik_acme_server }}"
-
-      [certificatesResolvers.letsencrypt.acme.dnsChallenge]
-        provider = "{{ traefik_dns_provider }}"
-
 [metrics]
   [metrics.prometheus]

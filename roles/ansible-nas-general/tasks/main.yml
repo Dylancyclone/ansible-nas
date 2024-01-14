@@ -51,3 +51,5 @@
     mode: "u=rwX,g=rwX,o=rX"
     recurse: false
   loop: "{{ samba_shares }}"
+  tags:
+    - skip_external_nas
