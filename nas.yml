@@ -395,6 +395,11 @@
       tags:
         - sickchill
 
+    - role: saltrim
+      tags:
+        - saltrim
+      when: (saltrim_enabled | default(False))
+
     - role: sonarr
       tags:
         - sonarr

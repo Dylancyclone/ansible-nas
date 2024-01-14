@@ -1,0 +1,32 @@
+---
+saltrim_enabled: false
+saltrim_available_externally: false
+
+saltrim_secret_key: "very_long-string!-09skqlOJIOKSN-ofrandonm-charcters!_?"
+
+saltrim_bar_name: "{{ ansible_nas_hostname }}"
+saltrim_bar_description: ""
+
+# directories
+saltrim_data_directory: "{{ docker_home }}/saltrim"
+
+# network
+saltrim_port: "9003"
+saltrim_api_port: "9004"
+saltrim_meilisearch_port: "9005"
+saltrim_hostname: "saltrim"
+saltrim_api_hostname: "saltrimapi"
+saltrim_meilisearch_hostname: "saltrimmeilisearch"
+
+# container names
+saltrim_container_network_name: "saltrim_network"
+saltrim_container_name_meilisearch: "saltrim_meilisearch"
+saltrim_container_name_redis: "saltrim_redis"
+saltrim_container_name_barassistant: "saltrim_barassistant"
+saltrim_container_name_ui: "saltrim_ui"
+
+# specs
+saltrim_ui_memory: 1g
+saltrim_meilisearch_memory: 1g
+saltrim_redis_memory: 1g
+saltrim_barassistant_memory: 1g

@@ -1,0 +1,127 @@
+---
+- name: Start saltrim
+  block:
+    - name: Create saltrim directories
+      file:
+        path: "{{ item }}"
+        state: directory
+      with_items:
+        - "{{ saltrim_data_directory }}/meilisearch_data"
+        - "{{ saltrim_data_directory }}/barassistant_data"
+
+    - name: Create saltrim network
+      docker_network:
+        name: "{{ saltrim_container_network_name }}"
+
+    - name: Create saltrim meilisearch Docker Container
+      docker_container:
+        name: "{{ saltrim_container_name_meilisearch }}"
+        image: getmeili/meilisearch:v1.1
+        pull: true
+        ports:
+          - "{{ saltrim_meilisearch_port }}:7700"
+        volumes:
+          - "{{ saltrim_data_directory }}/meilisearch_data:/meili_data:rw"
+        env:
+          MEILI_MASTER_KEY: "{{ saltrim_secret_key }}"
+          MEILI_ENV: production
+        restart_policy: unless-stopped
+        memory: "{{ saltrim_meilisearch_memory }}"
+        networks:
+          - name: "{{ saltrim_container_network_name }}"
+        labels:
+          traefik.enable: "{{ saltrim_available_externally | string }}"
+          traefik.http.routers.saltrimmeilisearch.rule: "Host(`{{ saltrim_meilisearch_hostname }}.{{ ansible_nas_domain }}`)"
+          traefik.http.routers.saltrimmeilisearch.tls.certresolver: "letsencrypt"
+          traefik.http.routers.saltrimmeilisearch.tls.domains[0].main: "{{ ansible_nas_domain }}"
+          traefik.http.routers.saltrimmeilisearch.tls.domains[0].sans: "*.{{ ansible_nas_domain }}"
+          traefik.http.services.saltrimmeilisearch.loadbalancer.server.port: "7700"
+
+    - name: Create saltrim redis Docker Container
+      docker_container:
+        name: "{{ saltrim_container_name_redis }}"
+        image: redis:7.0
+        pull: true
+        env:
+          ALLOW_EMPTY_PASSWORD: "yes"
+        restart_policy: unless-stopped
+        memory: "{{ saltrim_redis_memory }}"
+        networks:
+          - name: "{{ saltrim_container_network_name }}"
+
+    - name: Create saltrim barassistant Docker Container
+      docker_container:
+        name: "{{ saltrim_container_name_barassistant }}"
+        image: barassistant/server:v3
+        pull: true
+        ports:
+          - "{{ saltrim_api_port }}:3000"
+        volumes:
+          - "{{ saltrim_data_directory }}/barassistant_data:/var/www/cocktails/storage/bar-assistant:rw"
+        env:
+          APP_URL: "https://{{ saltrim_api_hostname }}.{{ ansible_nas_domain }}"
+          LOG_CHANNEL: "stderr"
+          MEILISEARCH_KEY: "{{ saltrim_secret_key }}"
+          MEILISEARCH_HOST: "https://{{ saltrim_meilisearch_hostname }}.{{ ansible_nas_domain }}"
+          REDIS_HOST: "{{ saltrim_container_name_redis }}"
+          ALLOW_REGISTRATION: "true"
+        restart_policy: unless-stopped
+        memory: "{{ saltrim_barassistant_memory }}"
+        networks:
+          - name: "{{ saltrim_container_network_name }}"
+        labels:
+          traefik.enable: "{{ saltrim_available_externally | string }}"
+          traefik.http.routers.saltrimapi.rule: "Host(`{{ saltrim_api_hostname }}.{{ ansible_nas_domain }}`)"
+          traefik.http.routers.saltrimapi.tls.certresolver: "letsencrypt"
+          traefik.http.routers.saltrimapi.tls.domains[0].main: "{{ ansible_nas_domain }}"
+          traefik.http.routers.saltrimapi.tls.domains[0].sans: "*.{{ ansible_nas_domain }}"
+          traefik.http.services.saltrimapi.loadbalancer.server.port: "3000"
+
+    - name: Create saltrim UI Docker Container
+      docker_container:
+        name: "{{ saltrim_container_name_ui }}"
+        image: barassistant/salt-rim:v2
+        ports:
+          - "{{ saltrim_port }}:8080"
+        restart_policy: unless-stopped
+        env:
+          API_URL: "https://{{ saltrim_api_hostname }}.{{ ansible_nas_domain }}"
+          MEILISEARCH_URL: "https://{{ saltrim_meilisearch_hostname }}.{{ ansible_nas_domain }}"
+          BAR_NAME: "{{ saltrim_bar_name }}"
+          DESCRIPTION: "{{ saltrim_bar_description }}"
+          DEFAULT_LOCALE: en-US
+        memory: "{{ saltrim_ui_memory }}"
+        networks:
+          - name: "{{ saltrim_container_network_name }}"
+        labels:
+          traefik.enable: "{{ saltrim_available_externally | string }}"
+          traefik.http.routers.saltrim.rule: "Host(`{{ saltrim_hostname }}.{{ ansible_nas_domain }}`)"
+          traefik.http.routers.saltrim.tls.certresolver: "letsencrypt"
+          traefik.http.routers.saltrim.tls.domains[0].main: "{{ ansible_nas_domain }}"
+          traefik.http.routers.saltrim.tls.domains[0].sans: "*.{{ ansible_nas_domain }}"
+          traefik.http.services.saltrim.loadbalancer.server.port: "8080"
+  when: saltrim_enabled
+
+- name: Stop saltrim
+  block:
+    - name: Stop saltrim UI Docker Container
+      docker_container:
+        name: "{{ saltrim_container_name_ui }}"
+        state: absent
+    - name: Stop saltrim meilisearch Docker Container
+      docker_container:
+        name: "{{ saltrim_container_name_meilisearch }}"
+        state: absent
+    - name: Stop saltrim redis broker
+      docker_container:
+        name: "{{ saltrim_container_name_redis }}"
+        state: absent
+    - name: Stop saltrim barassistant Docker Container
+      docker_container:
+        name: "{{ saltrim_container_name_barassistant }}"
+        state: absent
+    - name: Remove saltrim network
+      docker_network:
+        name: "{{ saltrim_container_network_name }}"
+        state: absent
+  when: not saltrim_enabled
