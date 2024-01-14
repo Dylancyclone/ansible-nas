@@ -36,7 +36,7 @@
           traefik.http.routers.jellyfin.tls.domains[0].main: "{{ ansible_nas_domain }}"
           traefik.http.routers.jellyfin.tls.domains[0].sans: "*.{{ ansible_nas_domain }}"
           traefik.http.services.jellyfin.loadbalancer.server.port: "8096"
-  when: jellyfin_enabled is true
+  when: jellyfin_enabled
 
 - name: Stop jellyfin
   block:
@@ -44,4 +44,4 @@
       community.docker.docker_container:
         name: "{{ jellyfin_container_name }}"
         state: absent
-  when: jellyfin_enabled is false
+  when: not jellyfin_enabled

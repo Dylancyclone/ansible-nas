@@ -32,7 +32,7 @@
           traefik.http.routers.sonarr.tls.domains[0].main: "{{ ansible_nas_domain }}"
           traefik.http.routers.sonarr.tls.domains[0].sans: "*.{{ ansible_nas_domain }}"
           traefik.http.services.sonarr.loadbalancer.server.port: "8989"
-  when: sonarr_enabled is true
+  when: sonarr_enabled
 
 - name: Stop Sonarr
   block:
@@ -40,4 +40,4 @@
       community.docker.docker_container:
         name: "{{ sonarr_container_name }}"
         state: absent
-  when: sonarr_enabled is false
+  when: not sonarr_enabled

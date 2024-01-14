@@ -33,7 +33,7 @@
           traefik.http.routers.sickchill.tls.domains[0].main: "{{ ansible_nas_domain }}"
           traefik.http.routers.sickchill.tls.domains[0].sans: "*.{{ ansible_nas_domain }}"
           traefik.http.services.sickchill.loadbalancer.server.port: "8081"
-  when: sickchill_enabled is true
+  when: sickchill_enabled
 
 - name: Stop Sickchill
   block:
@@ -41,4 +41,4 @@
       community.docker.docker_container:
         name: "{{ sickchill_container_name }}"
         state: absent
-  when: sickchill_enabled is false
+  when: not sickchill_enabled

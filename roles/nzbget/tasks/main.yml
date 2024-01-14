@@ -31,7 +31,7 @@
           traefik.http.routers.nzbget.tls.domains[0].main: "{{ ansible_nas_domain }}"
           traefik.http.routers.nzbget.tls.domains[0].sans: "*.{{ ansible_nas_domain }}"
           traefik.http.services.nzbget.loadbalancer.server.port: "6789"
-  when: nzbget_enabled is true
+  when: nzbget_enabled
 
 - name: Stop NZBget
   block:
@@ -39,4 +39,4 @@
       community.docker.docker_container:
         name: "{{ nzbget_container_name }}"
         state: absent
-  when: nzbget_enabled is false
+  when: not nzbget_enabled

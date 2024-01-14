@@ -35,7 +35,7 @@
           traefik.http.routers.navidrome.tls.domains[0].main: "{{ ansible_nas_domain }}"
           traefik.http.routers.navidrome.tls.domains[0].sans: "*.{{ ansible_nas_domain }}"
           traefik.http.services.navidrome.loadbalancer.server.port: "4533"
-  when: navidrome_enabled is true
+  when: navidrome_enabled
 
 - name: Stop Navidrome
   block:
@@ -43,4 +43,4 @@
       community.docker.docker_container:
         name: "{{ navidrome_container_name }}"
         state: absent
-  when: navidrome_enabled is false
+  when: not navidrome_enabled

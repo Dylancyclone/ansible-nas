@@ -32,7 +32,7 @@
           traefik.http.routers.homebridge.tls.domains[0].main: "{{ ansible_nas_domain }}"
           traefik.http.routers.homebridge.tls.domains[0].sans: "*.{{ ansible_nas_domain }}"
           traefik.http.services.homebridge.loadbalancer.server.port: "8087"
-  when: homebridge_enabled is true
+  when: homebridge_enabled
 
 - name: Stop Homebridge
   block:
@@ -40,4 +40,4 @@
       community.docker.docker_container:
         name: "{{ homebridge_container_name }}"
         state: absent
-  when: homebridge_enabled is false
+  when: not homebridge_enabled

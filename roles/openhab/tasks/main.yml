@@ -53,7 +53,7 @@
           traefik.http.routers.openhab.tls.domains[0].main: "{{ ansible_nas_domain }}"
           traefik.http.routers.openhab.tls.domains[0].sans: "*.{{ ansible_nas_domain }}"
           traefik.http.services.openhab.loadbalancer.server.port: "7777"
-  when: openhab_enabled is true
+  when: openhab_enabled
 
 - name: Stop openHAB
   block:
@@ -61,4 +61,4 @@
       community.docker.docker_container:
         name: "{{ openhab_container_name }}"
         state: absent
-  when: openhab_enabled is false
+  when: not openhab_enabled

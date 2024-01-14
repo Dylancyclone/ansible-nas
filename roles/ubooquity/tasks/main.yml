@@ -35,7 +35,7 @@
           traefik.http.routers.ubooquity.tls.domains[0].main: "{{ ansible_nas_domain }}"
           traefik.http.routers.ubooquity.tls.domains[0].sans: "*.{{ ansible_nas_domain }}"
           traefik.http.services.ubooquity.loadbalancer.server.port: "2202"
-  when: ubooquity_enabled is true
+  when: ubooquity_enabled
 
 - name: Stop Ubooquity
   block:
@@ -43,4 +43,4 @@
       community.docker.docker_container:
         name: "{{ ubooquity_container_name }}"
         state: absent
-  when: ubooquity_enabled is false
+  when: not ubooquity_enabled

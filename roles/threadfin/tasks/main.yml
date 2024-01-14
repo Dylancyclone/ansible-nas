@@ -19,7 +19,7 @@
           - "{{ threadfin_data_directory }}:/home/threadfin/conf"
         restart_policy: unless-stopped
         memory: "{{ threadfin_memory }}"
-  when: threadfin_enabled is true
+  when: threadfin_enabled
 
 - name: Stop Threadfin
   block:
@@ -27,4 +27,4 @@
       community.docker.docker_container:
         name: "{{ threadfin_container_name }}"
         state: absent
-  when: threadfin_enabled is false
+  when: not threadfin_enabled

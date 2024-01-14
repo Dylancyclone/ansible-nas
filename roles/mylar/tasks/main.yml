@@ -34,7 +34,7 @@
           traefik.http.routers.mylar.tls.domains[0].main: "{{ ansible_nas_domain }}"
           traefik.http.routers.mylar.tls.domains[0].sans: "*.{{ ansible_nas_domain }}"
           traefik.http.services.mylar.loadbalancer.server.port: "8090"
-  when: mylar_enabled is true
+  when: mylar_enabled
 
 - name: Stop Mylar
   block:
@@ -42,4 +42,4 @@
       community.docker.docker_container:
         name: "{{ mylar_container_name }}"
         state: absent
-  when: mylar_enabled is false
+  when: not mylar_enabled

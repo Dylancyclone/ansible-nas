@@ -4,7 +4,7 @@
     - name: Check for Loki installation
       ansible.builtin.fail:
         msg: "Promtail requires Loki enabled and running as a write target, please set that up first."
-      when: loki_enabled is false
+      when: not loki_enabled
 
     - name: Include Loki variables
       ansible.builtin.include_vars: ../../loki/defaults/main.yml
@@ -43,7 +43,7 @@
           traefik.http.routers.promtail.tls.domains[0].main: "{{ ansible_nas_domain }}"
           traefik.http.routers.promtail.tls.domains[0].sans: "*.{{ ansible_nas_domain }}"
           traefik.http.services.promtail.loadbalancer.server.port: "9080"
-  when: promtail_enabled is true
+  when: promtail_enabled
 
 - name: Stop promtail
   block:
@@ -51,4 +51,4 @@
       community.docker.docker_container:
         name: "{{ promtail_container_name }}"
         state: absent
-  when: promtail_enabled is false
+  when: not promtail_enabled

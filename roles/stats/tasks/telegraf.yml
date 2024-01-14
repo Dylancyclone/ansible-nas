@@ -49,7 +49,7 @@
         restart_policy: unless-stopped
         memory: 1g
         restart: "{{ telegraf_config is changed }}"
-  when: stats_enabled is true
+  when: stats_enabled
 
 - name: Stop Telegraf
   block:
@@ -57,4 +57,4 @@
       community.docker.docker_container:
         name: "{{ stats_telegraf_container_name }}"
         state: absent
-  when: stats_enabled is false
+  when: not stats_enabled

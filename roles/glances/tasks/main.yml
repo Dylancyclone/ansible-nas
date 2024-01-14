@@ -25,7 +25,7 @@
           traefik.http.routers.glances.tls.domains[0].main: "{{ ansible_nas_domain }}"
           traefik.http.routers.glances.tls.domains[0].sans: "*.{{ ansible_nas_domain }}"
           traefik.http.services.glances.loadbalancer.server.port: "61208"
-  when: glances_enabled is true
+  when: glances_enabled
 
 - name: Stop Glances
   block:
@@ -33,4 +33,4 @@
       community.docker.docker_container:
         name: "{{ glances_container_name }}"
         state: absent
-  when: glances_enabled is false
+  when: not glances_enabled

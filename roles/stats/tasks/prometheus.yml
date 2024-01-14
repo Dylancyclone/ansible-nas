@@ -46,7 +46,7 @@
           traefik.http.routers.prometheus.tls.domains[0].main: "{{ ansible_nas_domain }}"
           traefik.http.routers.prometheus.tls.domains[0].sans: "*.{{ ansible_nas_domain }}"
           traefik.http.services.prometheus.loadbalancer.server.port: "9090"
-  when: stats_enabled is true
+  when: stats_enabled
 
 - name: Stop Prometheus
   block:
@@ -54,4 +54,4 @@
       community.docker.docker_container:
         name: "{{ stats_prometheus_container_name }}"
         state: absent
-  when: stats_enabled is false
+  when: not stats_enabled

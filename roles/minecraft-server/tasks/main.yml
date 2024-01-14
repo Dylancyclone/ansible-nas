@@ -20,7 +20,7 @@
         env:
           EULA: "TRUE"
         restart_policy: unless-stopped
-  when: minecraft_server_enabled is true
+  when: minecraft_server_enabled
 
 - name: Stop Minecraft Server
   block:
@@ -28,4 +28,4 @@
       community.docker.docker_container:
         name: "{{ minecraft_server_container_name }}"
         state: absent
-  when: minecraft_server_enabled is false
+  when: not minecraft_server_enabled

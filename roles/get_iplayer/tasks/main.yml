@@ -21,7 +21,7 @@
           - "{{ get_iplayer_port }}:8181"
         restart_policy: unless-stopped
         memory: "{{ get_iplayer_memory }}"
-  when: get_iplayer_enabled is true
+  when: get_iplayer_enabled
 
 - name: Stop get_iplayer
   block:
@@ -29,4 +29,4 @@
       community.docker.docker_container:
         name: "{{ get_iplayer_container_name }}"
         state: absent
-  when: get_iplayer_enabled is false
+  when: not get_iplayer_enabled

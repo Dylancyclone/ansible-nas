@@ -24,21 +24,21 @@
           - "{{ duplicacy_cache_directory }}:/cache:rw"
           - "{{ samba_shares_root }}:/backuproot:{{ duplicacy_data_permissions }}"
           - "{{ duplicacy_backupsources_directory }}:/backupsources:ro"
-      env:
+        env:
           DUPLICACY_WEB_VERSION: "{{ duplicacy_web_version }}"
           TZ: "{{ ansible_nas_timezone }}"
           USR_ID: "{{ duplicacy_user_id }}"
           GRP_ID: "{{ duplicacy_group_id }}"
-          restart_policy: unless-stopped
-          memory: "{{ duplicacy_memory }}"
-          labels:
+        restart_policy: unless-stopped
+        memory: "{{ duplicacy_memory }}"
+        labels:
           traefik.enable: "{{ duplicacy_available_externally | string }}"
           traefik.http.routers.duplicacy.rule: "Host(`{{ duplicacy_hostname }}.{{ ansible_nas_domain }}`)"
           traefik.http.routers.duplicacy.tls.certresolver: "letsencrypt"
           traefik.http.routers.duplicacy.tls.domains[0].main: "{{ ansible_nas_domain }}"
           traefik.http.routers.duplicacy.tls.domains[0].sans: "*.{{ ansible_nas_domain }}"
           traefik.http.services.duplicacy.loadbalancer.server.port: "3875"
-  when: duplicacy_enabled is true
+  when: duplicacy_enabled
 
 - name: Stop Duplicacy
   block:
@@ -46,4 +46,4 @@
       community.docker.docker_container:
         name: "{{ duplicacy_container_name }}"
         state: absent
-  when: duplicacy_enabled is false
+  when: not duplicacy_enabled

@@ -31,7 +31,7 @@
         restart_policy: unless-stopped
         restart: "{{ mosquitto_conf is changed }}"
         memory: 1g
-  when: mosquitto_enabled is true
+  when: mosquitto_enabled
 
 - name: Stop Mosquitto
   block:
@@ -39,4 +39,4 @@
       community.docker.docker_container:
         name: "{{ mosquitto_container_name }}"
         state: absent
-  when: mosquitto_enabled is false
+  when: not mosquitto_enabled

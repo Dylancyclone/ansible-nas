@@ -31,7 +31,7 @@
           traefik.http.routers.overseerr.tls.domains[0].main: "{{ ansible_nas_domain }}"
           traefik.http.routers.overseerr.tls.domains[0].sans: "*.{{ ansible_nas_domain }}"
           traefik.http.services.overseerr.loadbalancer.server.port: "5055"
-  when: overseerr_enabled is true
+  when: overseerr_enabled
 
 - name: Stop Overseerr
   block:
@@ -39,4 +39,4 @@
       community.docker.docker_container:
         name: "{{ overseerr_container_name }}"
         state: absent
-  when: overseerr_enabled is false
+  when: not overseerr_enabled

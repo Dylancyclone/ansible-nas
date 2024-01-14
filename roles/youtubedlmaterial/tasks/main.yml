@@ -40,7 +40,7 @@
           traefik.http.routers.youtubedlmaterial.tls.domains[0].main: "{{ ansible_nas_domain }}"
           traefik.http.routers.youtubedlmaterial.tls.domains[0].sans: "*.{{ ansible_nas_domain }}"
           traefik.http.services.youtubedlmaterial.loadbalancer.server.port: "17442"
-  when: youtubedlmaterial_enabled is true
+  when: youtubedlmaterial_enabled
 
 - name: Stop Youtubedlmaterial
   block:
@@ -48,4 +48,4 @@
       community.docker.docker_container:
         name: "{{ youtubedlmaterial_container_name }}"
         state: absent
-  when: youtubedlmaterial_enabled is false
+  when: not youtubedlmaterial_enabled

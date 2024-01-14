@@ -13,7 +13,7 @@
         command: "{{ watchtower_command }}"
         restart_policy: unless-stopped
         memory: "{{ watchtower_memory }}"
-  when: watchtower_enabled is true
+  when: watchtower_enabled
 
 - name: Stop Watchtower
   block:
@@ -21,4 +21,4 @@
       community.docker.docker_container:
         name: "{{ watchtower_container_name }}"
         state: absent
-  when: watchtower_enabled is false
+  when: not watchtower_enabled

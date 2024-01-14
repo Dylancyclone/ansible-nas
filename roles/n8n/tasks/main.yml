@@ -33,7 +33,7 @@
           traefik.http.routers.n8n.tls.domains[0].main: "{{ ansible_nas_domain }}"
           traefik.http.routers.n8n.tls.domains[0].sans: "*.{{ ansible_nas_domain }}"
           traefik.http.services.n8n.loadbalancer.server.port: "5678"
-  when: n8n_enabled is true
+  when: n8n_enabled
 
 - name: Stop n8n
   block:
@@ -41,4 +41,4 @@
       community.docker.docker_container:
         name: "{{ n8n_container_name }}"
         state: absent
-  when: n8n_enabled is false
+  when: not n8n_enabled

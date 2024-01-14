@@ -55,7 +55,7 @@
           traefik.http.routers.joomla.tls.domains[0].main: "{{ ansible_nas_domain }}"
           traefik.http.routers.joomla.tls.domains[0].sans: "*.{{ ansible_nas_domain }}"
           traefik.http.services.joomla.loadbalancer.server.port: "80"
-  when: joomla_enabled is true
+  when: joomla_enabled
 
 - name: Stop Joomla
   block:
@@ -67,4 +67,4 @@
       community.docker.docker_container:
         name: "{{ joomla_db_container_name }}"
         state: absent
-  when: joomla_enabled is false
+  when: not joomla_enabled

@@ -38,7 +38,7 @@
         memory: "{{ traefik_memory }}"
         recreate: "{{ template_config is changed }}"
         dns_servers: ["8.8.8.8"]
-  when: traefik_enabled is true
+  when: traefik_enabled
 
 - name: Stop Traefik
   block:
@@ -46,4 +46,4 @@
       community.docker.docker_container:
         name: "{{ traefik_container_name }}"
         state: absent
-  when: traefik_enabled is false
+  when: not traefik_enabled

@@ -33,7 +33,7 @@
           traefik.http.routers.minio.tls.domains[0].main: "{{ ansible_nas_domain }}"
           traefik.http.routers.minio.tls.domains[0].sans: "*.{{ ansible_nas_domain }}"
           traefik.http.services.minio.loadbalancer.server.port: "9000"
-  when: minio_enabled is true
+  when: minio_enabled
 
 - name: Stop minio
   block:
@@ -41,4 +41,4 @@
       community.docker.docker_container:
         name: "{{ minio_container_name }}"
         state: absent
-  when: minio_enabled is false
+  when: not minio_enabled

@@ -37,7 +37,7 @@
           traefik.http.routers.mealie.tls.domains[0].main: "{{ ansible_nas_domain }}"
           traefik.http.routers.mealie.tls.domains[0].sans: "*.{{ ansible_nas_domain }}"
           traefik.http.services.mealie.loadbalancer.server.port: "80"
-  when: mealie_enabled is true
+  when: mealie_enabled
 
 - name: Stop Mealie
   block:
@@ -45,4 +45,4 @@
       community.docker.docker_container:
         name: "{{ mealie_container_name }}"
         state: absent
-  when: mealie_enabled is false
+  when: not mealie_enabled

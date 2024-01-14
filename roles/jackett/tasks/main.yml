@@ -29,7 +29,7 @@
           traefik.http.routers.jackett.tls.domains[0].main: "{{ ansible_nas_domain }}"
           traefik.http.routers.jackett.tls.domains[0].sans: "*.{{ ansible_nas_domain }}"
           traefik.http.services.jackett.loadbalancer.server.port: "9117"
-  when: jackett_enabled is true
+  when: jackett_enabled
 
 - name: Stop Jackett
   block:
@@ -37,4 +37,4 @@
       community.docker.docker_container:
         name: "{{ jackett_container_name }}"
         state: absent
-  when: jackett_enabled is false
+  when: not jackett_enabled

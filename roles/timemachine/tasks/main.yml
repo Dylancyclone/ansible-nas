@@ -38,7 +38,7 @@
         src: timemachine.service
         dest: "/etc/avahi/services/timemachine.service"
       notify: reload avahi configuration
-  when: timemachine_enabled is true
+  when: timemachine_enabled
 
 - name: Stop Time Machine
   block:
@@ -46,4 +46,4 @@
       community.docker.docker_container:
         name: "{{ timemachine_container_name }}"
         state: absent
-  when: timemachine_enabled is false
+  when: not timemachine_enabled

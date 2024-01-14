@@ -35,7 +35,7 @@
           traefik.http.routers.thelounge.tls.domains[0].main: "{{ ansible_nas_domain }}"
           traefik.http.routers.thelounge.tls.domains[0].sans: "*.{{ ansible_nas_domain }}"
           traefik.http.services.thelounge.loadbalancer.server.port: "9000"
-  when: thelounge_enabled is true
+  when: thelounge_enabled
 
 - name: Stop The Lounge
   block:
@@ -43,4 +43,4 @@
       community.docker.docker_container:
         name: "{{ thelounge_container_name }}"
         state: absent
-  when: thelounge_enabled is false
+  when: not thelounge_enabled

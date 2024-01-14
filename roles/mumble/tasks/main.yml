@@ -32,7 +32,7 @@
           traefik.http.routers.mumble.tls.domains[0].main: "{{ ansible_nas_domain }}"
           traefik.http.routers.mumble.tls.domains[0].sans: "*.{{ ansible_nas_domain }}"
           traefik.http.services.mumble.loadbalancer.server.port: "64738"
-  when: mumble_enabled is true
+  when: mumble_enabled
 
 - name: Stop Mumble
   block:
@@ -40,4 +40,4 @@
       community.docker.docker_container:
         name: "{{ mumble_container_name }}"
         state: absent
-  when: mumble_enabled is false
+  when: not mumble_enabled

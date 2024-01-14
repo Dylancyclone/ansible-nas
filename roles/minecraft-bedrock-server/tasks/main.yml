@@ -24,7 +24,7 @@
           DIFFICULTY: "{{ minecraft_bedrock_server_difficulty }}"
           ONLINE_MODE: "{{ minecraft_bedrock_server_online_mode }}"
         restart_policy: unless-stopped
-  when: minecraft_bedrock_server_enabled is true
+  when: minecraft_bedrock_server_enabled
 
 - name: Stop Minecraft Bedrock Server
   block:
@@ -32,4 +32,4 @@
       community.docker.docker_container:
         name: "{{ minecraft_bedrock_server_container_name }}"
         state: absent
-  when: minecraft_bedrock_server_enabled is false
+  when: not minecraft_bedrock_server_enabled

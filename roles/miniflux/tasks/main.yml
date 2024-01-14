@@ -53,7 +53,7 @@
           traefik.http.routers.miniflux.tls.domains[0].main: "{{ ansible_nas_domain }}"
           traefik.http.routers.miniflux.tls.domains[0].sans: "*.{{ ansible_nas_domain }}"
           traefik.http.services.miniflux.loadbalancer.server.port: "8080"
-  when: miniflux_enabled is true
+  when: miniflux_enabled
 
 - name: Stop Miniflux
   block:
@@ -61,4 +61,4 @@
       community.docker.docker_container:
         name: "{{ miniflux_container_name }}"
         state: absent
-  when: miniflux_enabled is false
+  when: not miniflux_enabled

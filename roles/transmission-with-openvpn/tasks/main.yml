@@ -57,7 +57,7 @@
           traefik.http.routers.transmission_openvpn.tls.domains[0].main: "{{ ansible_nas_domain }}"
           traefik.http.routers.transmission_openvpn.tls.domains[0].sans: "*.{{ ansible_nas_domain }}"
           traefik.http.services.transmission_openvpn.loadbalancer.server.port: "9091"
-  when: transmission_with_openvpn_enabled is true
+  when: transmission_with_openvpn_enabled
 
 - name: Stop Transmission with OpenVPM
   block:
@@ -65,4 +65,4 @@
       community.docker.docker_container:
         name: "{{ transmission_openvpn_container_name }}"
         state: absent
-  when: transmission_with_openvpn_enabled is false
+  when: not transmission_with_openvpn_enabled

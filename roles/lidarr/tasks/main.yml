@@ -30,7 +30,7 @@
           traefik.http.routers.lidarr.tls.domains[0].main: "{{ ansible_nas_domain }}"
           traefik.http.routers.lidarr.tls.domains[0].sans: "*.{{ ansible_nas_domain }}"
           traefik.http.services.lidarr.loadbalancer.server.port: "8686"
-  when: lidarr_enabled is true
+  when: lidarr_enabled
 
 - name: Stop Lidarr
   block:
@@ -38,4 +38,4 @@
       community.docker.docker_container:
         name: "{{ lidarr_container_name }}"
         state: absent
-  when: lidarr_enabled is false
+  when: not lidarr_enabled

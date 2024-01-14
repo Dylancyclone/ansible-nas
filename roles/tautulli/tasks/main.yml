@@ -33,7 +33,7 @@
           traefik.http.routers.tautulli.tls.domains[0].main: "{{ ansible_nas_domain }}"
           traefik.http.routers.tautulli.tls.domains[0].sans: "*.{{ ansible_nas_domain }}"
           traefik.http.services.tautulli.loadbalancer.server.port: "8181"
-  when: tautulli_enabled is true
+  when: tautulli_enabled
 
 - name: Stop Tautulli
   block:
@@ -41,4 +41,4 @@
       community.docker.docker_container:
         name: "{{ tautulli_container_name }}"
         state: absent
-  when: tautulli_enabled is false
+  when: not tautulli_enabled

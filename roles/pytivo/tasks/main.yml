@@ -38,7 +38,7 @@
           traefik.http.routers.pytivo.tls.domains[0].main: "{{ ansible_nas_domain }}"
           traefik.http.routers.pytivo.tls.domains[0].sans: "*.{{ ansible_nas_domain }}"
           traefik.http.services.pytivo.loadbalancer.server.port: "9032"
-  when: pytivo_enabled is true
+  when: pytivo_enabled
 
 - name: Stop Pytivo
   block:
@@ -46,4 +46,4 @@
       community.docker.docker_container:
         name: "{{ pytivo_container_name }}"
         state: absent
-  when: pytivo_enabled is false
+  when: not pytivo_enabled

@@ -27,7 +27,7 @@
           traefik.http.routers.homeassistant.tls.domains[0].sans: "*.{{ ansible_nas_domain }}"
           traefik.http.services.homeassistant.loadbalancer.server.port: "8123"
         memory: "{{ homeassistant_memory }}"
-  when: homeassistant_enabled is true
+  when: homeassistant_enabled
 
 - name: Stop homeassistant
   block:
@@ -35,4 +35,4 @@
       community.docker.docker_container:
         name: "{{ homeassistant_container_name }}"
         state: absent
-  when: homeassistant_enabled is false
+  when: not homeassistant_enabled

@@ -4,7 +4,7 @@
     - name: Check for Gitea installation
       ansible.builtin.fail:
         msg: "Woodpecker-CI requires Gitea enabled and running for authentication, please set that up first."
-      when: gitea_enabled is false
+      when: not gitea_enabled
 
     - name: Check for Gitea config
       ansible.builtin.fail:
@@ -71,7 +71,7 @@
           SKIP_TLS_VERIFY=true
       notify: restart
       tags: molecule-notest
-  when: woodpecker_ci_enabled is true
+  when: woodpecker_ci_enabled
 
 - name: Stop Woodpecker-CI
   block:
@@ -79,4 +79,4 @@
       community.docker.docker_container:
         name: "{{ woodpecker_ci_container_name }}"
         state: absent
-  when: woodpecker_ci_enabled is false
+  when: not woodpecker_ci_enabled

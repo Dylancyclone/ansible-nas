@@ -53,7 +53,7 @@
           traefik.http.routers.grafana.tls.domains[0].main: "{{ ansible_nas_domain }}"
           traefik.http.routers.grafana.tls.domains[0].sans: "*.{{ ansible_nas_domain }}"
           traefik.http.services.grafana.loadbalancer.server.port: "3000"
-  when: stats_enabled is true
+  when: stats_enabled
 
 - name: Stop Grafana
   block:
@@ -61,4 +61,4 @@
       community.docker.docker_container:
         name: "{{ stats_grafana_container_name }}"
         state: absent
-  when: stats_enabled is false
+  when: not stats_enabled

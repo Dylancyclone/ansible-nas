@@ -34,7 +34,7 @@
           traefik.http.routers.netbootxyz.tls.domains[0].main: "{{ ansible_nas_domain }}"
           traefik.http.routers.netbootxyz.tls.domains[0].sans: "*.{{ ansible_nas_domain }}"
           traefik.http.services.netbootxyz.loadbalancer.server.port: "3000"
-  when: netbootxyz_enabled is true
+  when: netbootxyz_enabled
 
 - name: Stop Netbootxyz
   block:
@@ -42,4 +42,4 @@
       community.docker.docker_container:
         name: "{{ netbootxyz_container_name }}"
         state: absent
-  when: netbootxyz_enabled is false
+  when: not netbootxyz_enabled

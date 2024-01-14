@@ -59,7 +59,7 @@
           traefik.http.routers.piwigo.tls.domains[0].main: "{{ ansible_nas_domain }}"
           traefik.http.routers.piwigo.tls.domains[0].sans: "*.{{ ansible_nas_domain }}"
           traefik.http.services.piwigo.loadbalancer.server.port: "80"
-  when: piwigo_enabled is true
+  when: piwigo_enabled
 
 - name: Stop Piwigo
   block:
@@ -71,4 +71,4 @@
       community.docker.docker_container:
         name: "{{ piwigo_db_container_name }}"
         state: absent
-  when: piwigo_enabled is false
+  when: not piwigo_enabled

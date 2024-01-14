@@ -30,7 +30,7 @@
         privileged: true
         restart_policy: unless-stopped
         memory: "{{ virtual_desktop_memory }}"
-  when: virtual_desktop_enabled is true
+  when: virtual_desktop_enabled
 
 - name: Stop Virtual Desktop
   block:
@@ -38,4 +38,4 @@
       community.docker.docker_container:
         name: "{{ virtual_desktop_container_name }}"
         state: absent
-  when: virtual_desktop_enabled is false
+  when: not virtual_desktop_enabled

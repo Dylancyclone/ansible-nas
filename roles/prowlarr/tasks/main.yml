@@ -30,7 +30,7 @@
           traefik.http.routers.prowlarr.tls.domains[0].main: "{{ ansible_nas_domain }}"
           traefik.http.routers.prowlarr.tls.domains[0].sans: "*.{{ ansible_nas_domain }}"
           traefik.http.services.prowlarr.loadbalancer.server.port: "9696"
-  when: prowlarr_enabled is true
+  when: prowlarr_enabled
 
 - name: Stop Prowlarr
   block:
@@ -38,4 +38,4 @@
       community.docker.docker_container:
         name: "{{ prowlarr_container_name }}"
         state: absent
-  when: prowlarr_enabled is false
+  when: not prowlarr_enabled

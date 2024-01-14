@@ -57,7 +57,7 @@
           traefik.http.routers.gitlab.tls.domains[0].main: "{{ ansible_nas_domain }}"
           traefik.http.routers.gitlab.tls.domains[0].sans: "*.{{ ansible_nas_domain }}"
           traefik.http.services.gitlab.loadbalancer.server.port: "80"
-  when: gitlab_enabled is true
+  when: gitlab_enabled
 
 - name: Stop Gitlab
   block:
@@ -65,4 +65,4 @@
       community.docker.docker_container:
         name: "{{ gitlab_container_name }}"
         state: absent
-  when: gitlab_enabled is false
+  when: not gitlab_enabled

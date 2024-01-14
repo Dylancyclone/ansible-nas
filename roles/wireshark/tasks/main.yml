@@ -32,7 +32,7 @@
           traefik.http.routers.wireshark.tls.domains[0].main: "{{ ansible_nas_domain }}"
           traefik.http.routers.wireshark.tls.domains[0].sans: "*.{{ ansible_nas_domain }}"
           traefik.http.services.wireshark.loadbalancer.server.port: "3000"
-  when: wireshark_enabled is true
+  when: wireshark_enabled
 
 - name: Stop Wireshark
   block:
@@ -40,4 +40,4 @@
       community.docker.docker_container:
         name: "{{ wireshark_container_name }}"
         state: absent
-  when: wireshark_enabled is false
+  when: not wireshark_enabled

@@ -7,7 +7,7 @@
         minio_enabled: true
         loki_enabled: true
         promtail_enabled: true
-  when: logging_stack_enabled is true
+  when: logging_stack_enabled
   # vars:
   #   minio_enabled: true
   #   loki_enabled: true
@@ -22,7 +22,7 @@
         minio_enabled: false
         loki_enabled: false
         promtail_enabled: false
-  when: logging_stack_enabled is false
+  when: not logging_stack_enabled
   # vars:
   #   minio_enabled: false
   #   loki_enabled: false

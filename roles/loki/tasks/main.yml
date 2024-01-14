@@ -4,12 +4,12 @@
     - name: Check for Minio installation
       ansible.builtin.fail:
         msg: "Loki requires Minio enabled and running for storage, please set that up first."
-      when: minio_enabled is false
+      when: not minio_enabled
 
     - name: Check for Grafana installation
       ansible.builtin.fail:
         msg: "Loki requires Grafana enabled and running for visualisation, please set that up first."
-      when: grafana_enabled is false
+      when: not grafana_enabled
 
     - name: Include Stats variables
       ansible.builtin.include_vars: ../../stats/defaults/main.yml
@@ -67,7 +67,7 @@
         dest: "{{ stats_grafana_config_directory }}/provisioning/datasources/loki.yml"
         owner: "472"
       notify: restart grafana
-  when: loki_enabled is true
+  when: loki_enabled
 
 - name: Stop loki
   block:
@@ -75,4 +75,4 @@
       community.docker.docker_container:
         name: "{{ loki_container_name }}"
         state: absent
-  when: loki_enabled is false
+  when: not loki_enabled

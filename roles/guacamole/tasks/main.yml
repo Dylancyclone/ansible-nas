@@ -52,7 +52,7 @@
         image: "{{ guacamole_image_name }}:{{ guacamole_image_version }}"
         restart: true
       tags: molecule-idempotence-notest
-  when: guacamole_enabled is true
+  when: guacamole_enabled
 
 - name: Stop Guacamole
   block:
@@ -60,4 +60,4 @@
       community.docker.docker_container:
         name: "{{ guacamole_container_name }}"
         state: absent
-  when: guacamole_enabled is false
+  when: not guacamole_enabled

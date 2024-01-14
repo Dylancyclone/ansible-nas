@@ -34,7 +34,7 @@
           traefik.http.routers.netdata.tls.domains[0].main: "{{ ansible_nas_domain }}"
           traefik.http.routers.netdata.tls.domains[0].sans: "*.{{ ansible_nas_domain }}"
           traefik.http.services.netdata.loadbalancer.server.port: "19999"
-  when: netdata_enabled is true
+  when: netdata_enabled
 
 - name: Stop Netdata
   block:
@@ -42,4 +42,4 @@
       community.docker.docker_container:
         name: "{{ netdata_container_name }}"
         state: absent
-  when: netdata_enabled is false
+  when: not netdata_enabled

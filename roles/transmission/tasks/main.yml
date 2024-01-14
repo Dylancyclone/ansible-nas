@@ -37,7 +37,7 @@
           traefik.http.routers.transmission.tls.domains[0].main: "{{ ansible_nas_domain }}"
           traefik.http.routers.transmission.tls.domains[0].sans: "*.{{ ansible_nas_domain }}"
           traefik.http.services.transmission.loadbalancer.server.port: "9091"
-  when: transmission_enabled is true
+  when: transmission_enabled
 
 - name: Stop Transmission
   block:
@@ -45,4 +45,4 @@
       community.docker.docker_container:
         name: "{{ transmission_container_name }}"
         state: absent
-  when: transmission_enabled is false
+  when: not transmission_enabled

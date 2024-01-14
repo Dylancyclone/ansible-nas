@@ -17,7 +17,7 @@
         restart_policy: unless-stopped
         network_mode: host
         memory: "{{ minidlna_memory }}"
-  when: minidlna_enabled is true
+  when: minidlna_enabled
 
 - name: Stop MiniDLNA
   block:
@@ -25,4 +25,4 @@
       community.docker.docker_container:
         name: "{{ minidlna_container_name }}"
         state: absent
-  when: minidlna_enabled is false
+  when: not minidlna_enabled

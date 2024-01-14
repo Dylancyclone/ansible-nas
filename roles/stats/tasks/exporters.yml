@@ -22,7 +22,7 @@
         restart_policy: unless-stopped
         memory: "{{ stats_speedtest_exporter_memory }}"
       when: stats_internet_speed_test_enabled
-  when: stats_enabled is true
+  when: stats_enabled
 
 - name: Stop Exporters
   block:
@@ -34,4 +34,4 @@
       community.docker.docker_container:
         name: "{{ stats_speedtest_container_name }}"
         state: absent
-  when: stats_enabled is false
+  when: not stats_enabled

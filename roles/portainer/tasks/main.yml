@@ -30,7 +30,7 @@
           traefik.http.services.portainer.loadbalancer.server.port: "9443"
           traefik.http.routers.portainer.middlewares: "portainer-ipwhitelist@docker"
           traefik.http.middlewares.portainer-ipwhitelist.ipwhitelist.sourcerange: "{{ portainer_ip_whitelist }}"
-  when: portainer_enabled is true
+  when: portainer_enabled
 
 - name: Stop Portainer
   block:
@@ -38,4 +38,4 @@
       community.docker.docker_container:
         name: "{{ portainer_container_name }}"
         state: absent
-  when: portainer_enabled is false
+  when: not portainer_enabled

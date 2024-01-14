@@ -1,29 +1,6 @@
 source:
   github:
-    - token: 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
-    # alternatively, specify token in a file, relative to current working directory when executed.
-      # token_file: token.txt
-      # user: some-user # the user you want to clone the repositories from.
-      # if you want to get everything from your user, leave out the user parameter and just use the token.
-      # for the clone process, either use:
-      # - username + password
-      # - sshkey
-      # - token
-      # username: your-user # user is used to clone the repo with
-      # password: your-password
-      # ssh: true # can be true or false
-      # sshkey: /path/to/key # if empty, it uses your home directories' .ssh/id_rsa
-      # exclude: # this excludes the repos "foo" and "bar"
-      #   - foo
-      #   - bar
-      # include: # this includes the repo "foobar"
-      #   - foobar
-      # excludeorgs: # this excludes repos from the organizations "foo" and "bar"
-      #   - foo
-      #   - bar
-      # includeorgs: # this includes repos from the organizations "foo1" and "bar1"
-      #   - foo1
-      #   - bar1
+    - token: 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
       wiki: true # includes wiki too
       starred: true # includes the user's starred repositories too
 destination:
