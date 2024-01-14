@@ -1,8 +1,0 @@
-[tls.stores.default.defaultCertificate]
-  certFile = "/etc/traefik/lathrumpubkey.pem"
-  keyFile = "/etc/traefik/lathrumprivkey.pem"
-
-[[tls.certificates]]
-  certFile = "/etc/traefik/lathrumpubkey.pem"
-  keyFile = "/etc/traefik/lathrumprivkey.pem"
-  stores = ["default"]

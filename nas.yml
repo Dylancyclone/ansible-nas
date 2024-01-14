@@ -64,6 +64,16 @@
       tags:
         - airsonic
 
+    - role: audiobookscraper
+      tags:
+        - audiobookscraper
+      when: (audiobookscraper_enabled | default(False))
+
+    - role: autoshift
+      tags:
+        - autoshift
+      when: (autoshift_enabled | default(False))
+
     - role: bazarr
       tags:
         - bazarr
@@ -350,8 +360,8 @@
         - sabnzbd
 
     - role: readarr
-        - readarr
       tags:
+        - readarr
       when: (readarr_enabled | default(False))
 
     - role: sickchill

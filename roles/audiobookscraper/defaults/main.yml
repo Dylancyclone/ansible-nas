@@ -1,0 +1,19 @@
+---
+audiobookscraper_enabled: false
+audiobookscraper_available_externally: "false"
+
+# directories
+audiobookscraper_downloads_directory: "{{ audiobooks_root }}"
+audiobookscraper_data_directory: "{{ docker_home }}/audiobookscraper"
+
+
+# network
+audiobookscraper_port: "8092"
+audiobookscraper_hostname: "audiobookscraper"
+
+# uid/gid
+audiobookscraper_user_id: "0"
+audiobookscraper_group_id: "0"
+
+# specs
+audiobookscraper_memory: 1g

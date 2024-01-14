@@ -37,6 +37,7 @@
         restart_policy: unless-stopped
         memory: "{{ traefik_memory }}"
         recreate: "{{ template_config is changed }}"
+        dns_servers: ["8.8.8.8"]
   when: traefik_enabled is true
 
 - name: Stop Traefik

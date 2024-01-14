@@ -1,0 +1,34 @@
+---
+- name: Create AudiobookScraper Directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    # mode: 0755
+  with_items:
+    - "{{ audiobookscraper_data_directory }}/data"
+    - "{{ audiobookscraper_downloads_directory }}/raw"
+    - "{{ audiobookscraper_downloads_directory }}/final"
+
+- name: AudiobookScraper Docker Container
+  docker_container:
+    name: audiobookscraper
+    image: csandman/audiobook-scraper:next
+    pull: true
+    volumes:
+      - "{{ audiobookscraper_data_directory }}/data:/config:rw"
+      - "{{ audiobookscraper_downloads_directory }}/raw:/source:rw"
+      - "{{ audiobookscraper_downloads_directory }}/final:/final:rw"
+    ports:
+      - "{{ audiobookscraper_port }}:3000"
+    env:
+      PUID: "{{ audiobookscraper_user_id }}"
+      PGID: "{{ audiobookscraper_group_id }}"
+    restart_policy: unless-stopped
+    memory: "{{ audiobookscraper_memory }}"
+    labels:
+      traefik.enable: "{{ audiobookscraper_available_externally }}"
+      traefik.http.routers.audiobookscraper.rule: "Host(`{{ audiobookscraper_hostname }}.{{ ansible_nas_domain }}`)"
+      traefik.http.routers.audiobookscraper.tls.certresolver: "letsencrypt"
+      traefik.http.routers.audiobookscraper.tls.domains[0].main: "{{ ansible_nas_domain }}"
+      traefik.http.routers.audiobookscraper.tls.domains[0].sans: "*.{{ ansible_nas_domain }}"
+      traefik.http.services.audiobookscraper.loadbalancer.server.port: "3000"

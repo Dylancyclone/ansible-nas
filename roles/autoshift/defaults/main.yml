@@ -1,0 +1,8 @@
+---
+autoshift_enabled: false
+
+# directories
+autoshift_data_directory: "{{ docker_home }}/autoshift"
+
+# specs
+autoshift_memory: 1g
