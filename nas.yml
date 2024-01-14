@@ -144,6 +144,11 @@
       tags:
         - get_iplayer
 
+    - role: gickup
+      tags:
+        - gickup
+      when: (gickup_enabled | default(False))
+
     - role: gitea
       tags:
         - gitea

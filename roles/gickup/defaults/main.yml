@@ -1,0 +1,9 @@
+---
+gickup_enabled: false
+
+# directories
+gickup_download_directory: "{{ downloads_root }}"
+gickup_data_directory: "{{ docker_home }}/gickup"
+
+# specs
+gickup_memory: 1g
