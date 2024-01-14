@@ -15,7 +15,7 @@
         image: "{{ komga_image_name }}:{{ komga_image_version }}"
         pull: true
         volumes:
-          - "{{ komga_comics_directory }}:/comics:ro"
+          - "{{ komga_comics_directory }}:/comics:rw"
           - "{{ komga_books_directory }}:/books:ro"
           - "{{ komga_data_directory }}:/data:rw"
           - "{{ komga_data_directory }}/config:/config:rw"

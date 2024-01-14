@@ -109,7 +109,6 @@
           PAPERLESS_ADMIN_USER: "{{ paperless_admin_user }}"
           PAPERLESS_ADMIN_PASSWORD: "{{ paperless_admin_password }}"
           PAPERLESS_ADMIN_MAIL: "{{ paperless_admin_mail }}"
-          PAPERLESS_ALLOWED_HOSTS: "localhost,192.168.0.5"
           PAPERLESS_CONSUMER_POLLING: "300"
 
         restart_policy: unless-stopped
