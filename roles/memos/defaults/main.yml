@@ -1,0 +1,14 @@
+---
+memos_enabled: false
+memos_available_externally: "false"
+
+# directories
+memos_data_directory: "{{ docker_home }}/memos"
+
+
+# network
+memos_port: "5230"
+memos_hostname: "memos"
+
+# specs
+memos_memory: 1g
