@@ -380,6 +380,11 @@
       tags:
         - stats
 
+    - role: steam-games-grid
+      tags:
+        - steam-games-grid
+      when: (steam_games_grid_enabled | default(False))
+
     - role: syncthing
       tags:
         - syncthing

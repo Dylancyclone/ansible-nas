@@ -1,0 +1,10 @@
+---
+steam_games_grid_enabled: false
+steam_games_grid_available_externally: "false"
+
+# network
+steam_games_grid_port: "8093"
+steam_games_grid_hostname: "steam-games-grid"
+
+# specs
+steam_games_grid_memory: 1g

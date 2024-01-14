@@ -1,0 +1,17 @@
+---
+- name: steam-games-grid Docker Container
+  docker_container:
+    name: steam_games_grid
+    image: dylancyclone/steam-games-grid:latest
+    pull: true
+    ports:
+      - "{{ steam_games_grid_port }}:8080"
+    restart_policy: unless-stopped
+    memory: "{{ steam_games_grid_memory }}"
+    labels:
+      traefik.enable: "{{ steam_games_grid_available_externally }}"
+      traefik.http.routers.steam_games_grid.rule: "Host(`{{ steam_games_grid_hostname }}.{{ ansible_nas_domain }}`)"
+      traefik.http.routers.steam_games_grid.tls.certresolver: "letsencrypt"
+      traefik.http.routers.steam_games_grid.tls.domains[0].main: "{{ ansible_nas_domain }}"
+      traefik.http.routers.steam_games_grid.tls.domains[0].sans: "*.{{ ansible_nas_domain }}"
+      traefik.http.services.steam_games_grid.loadbalancer.server.port: "8080"
