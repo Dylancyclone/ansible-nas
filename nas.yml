@@ -417,6 +417,11 @@
         - steam-games-grid
       when: (steam_games_grid_enabled | default(False))
 
+    - role: sterlingpdf
+      tags:
+        - sterlingpdf
+      when: (sterlingpdf_enabled | default(False))
+
     - role: syncthing
       tags:
         - syncthing
