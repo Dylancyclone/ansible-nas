@@ -1,0 +1,21 @@
+---
+audiobookshelf_enabled: false
+audiobookshelf_available_externally: "false"
+
+# directories
+audiobookshelf_audiobooks_directory: "{{ audiobooks_root }}"
+audiobookshelf_books_directory: "{{ books_root }}"
+audiobookshelf_podcasts_directory: "{{ podcasts_root }}"
+audiobookshelf_data_directory: "{{ docker_home }}/audiobookshelf"
+
+
+# network
+audiobookshelf_port: "8094"
+audiobookshelf_hostname: "audiobookshelf"
+
+# uid/gid
+audiobookshelf_user_id: "99"
+audiobookshelf_group_id: "100"
+
+# specs
+audiobookshelf_memory: 1g

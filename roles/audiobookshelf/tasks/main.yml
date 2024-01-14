@@ -1,0 +1,38 @@
+---
+- name: Create Audiobookshelf Directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    # mode: 0755
+  with_items:
+    - "{{ audiobookshelf_data_directory }}/config"
+    - "{{ audiobookshelf_data_directory }}/metadata"
+    - "{{ audiobookshelf_audiobooks_directory }}"
+    - "{{ audiobookshelf_books_directory }}"
+    - "{{ audiobookshelf_podcasts_directory }}"
+
+- name: Audiobookshelf Docker Container
+  docker_container:
+    name: audiobookshelf
+    image: ghcr.io/advplyr/audiobookshelf:latest
+    pull: true
+    volumes:
+      - "{{ audiobookshelf_data_directory }}/config:/config:rw"
+      - "{{ audiobookshelf_data_directory }}/metadata:/metadata:rw"
+      - "{{ audiobookshelf_audiobooks_directory }}:/audiobooks:rw"
+      - "{{ audiobookshelf_books_directory }}:/books:rw"
+      - "{{ audiobookshelf_podcasts_directory }}:/podcasts:rw"
+    ports:
+      - "{{ audiobookshelf_port }}:80"
+    env:
+      AUDIOBOOKSHELF_UID: "{{ audiobookshelf_user_id }}"
+      AUDIOBOOKSHELF_GID: "{{ audiobookshelf_group_id }}"
+    restart_policy: unless-stopped
+    memory: "{{ audiobookshelf_memory }}"
+    labels:
+      traefik.enable: "{{ audiobookshelf_available_externally }}"
+      traefik.http.routers.audiobookshelf.rule: "Host(`{{ audiobookshelf_hostname }}.{{ ansible_nas_domain }}`)"
+      traefik.http.routers.audiobookshelf.tls.certresolver: "letsencrypt"
+      traefik.http.routers.audiobookshelf.tls.domains[0].main: "{{ ansible_nas_domain }}"
+      traefik.http.routers.audiobookshelf.tls.domains[0].sans: "*.{{ ansible_nas_domain }}"
+      traefik.http.services.audiobookshelf.loadbalancer.server.port: "80"
