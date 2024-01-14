@@ -1,0 +1,19 @@
+---
+emulatorjs_enabled: false
+emulatorjs_available_externally: "false"
+
+# directories
+emulatorjs_data_directory: "{{ docker_home }}/emulatorjs"
+
+# network
+emulatorjs_port: "8078"
+emulatorjs_data_port: "8079"
+emulatorjs_ifps_port: "4001"
+emulatorjs_hostname: "emulatorjs"
+
+# uid/gid
+emulatorjs_user_id: "1000"
+emulatorjs_group_id: "1000"
+
+# specs
+emulatorjs_memory: 1g

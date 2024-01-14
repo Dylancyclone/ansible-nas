@@ -1,0 +1,35 @@
+---
+- name: Create emulatorjs Directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    # mode: 0755
+  with_items:
+    - "{{ emulatorjs_data_directory }}/data"
+    - "{{ emulatorjs_data_directory }}/config"
+
+- name: emulatorjs Docker Container
+  docker_container:
+    name: emulatorjs
+    image: lscr.io/linuxserver/emulatorjs
+    pull: true
+    volumes:
+      - "{{ emulatorjs_data_directory }}/config:/config:rw"
+      - "{{ emulatorjs_data_directory }}/data:/data:rw"
+    ports:
+      - "{{ emulatorjs_port }}:80"
+      - "{{ emulatorjs_data_port }}:3000"
+      - "{{ emulatorjs_ifps_port }}:4001"
+    env:
+      TZ: "{{ ansible_nas_timezone }}"
+      PUID: "{{ emulatorjs_user_id }}"
+      PGID: "{{ emulatorjs_group_id }}"
+    restart_policy: unless-stopped
+    memory: "{{ emulatorjs_memory }}"
+    labels:
+      traefik.enable: "{{ emulatorjs_available_externally }}"
+      traefik.http.routers.emulatorjs.rule: "Host(`{{ emulatorjs_hostname }}.{{ ansible_nas_domain }}`)"
+      traefik.http.routers.emulatorjs.tls.certresolver: "letsencrypt"
+      traefik.http.routers.emulatorjs.tls.domains[0].main: "{{ ansible_nas_domain }}"
+      traefik.http.routers.emulatorjs.tls.domains[0].sans: "*.{{ ansible_nas_domain }}"
+      traefik.http.services.emulatorjs.loadbalancer.server.port: "80"

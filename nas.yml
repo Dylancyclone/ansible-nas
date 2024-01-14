@@ -148,6 +148,11 @@
       tags:
         - emby
 
+    - role: emulatorjs
+      tags:
+        - emulatorjs
+      when: (emulatorjs_enabled | default(False))
+
     - role: esphome
       tags:
         - esphome
