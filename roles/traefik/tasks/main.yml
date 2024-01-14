@@ -15,12 +15,6 @@
         dest: "{{ traefik_data_directory }}/traefik.toml"
       register: template_config
 
-    - name: Template tls-certs config.toml
-      template:
-        src: tls-certs.toml
-        dest: "{{ traefik_data_directory }}/tls-certs.toml"
-      register: template_config
-
     - name: Traefik Docker Container
       community.docker.docker_container:
         name: "{{ traefik_container_name }}"
@@ -29,9 +23,7 @@
         network_mode: host
         volumes:
           - "{{ traefik_data_directory }}/traefik.toml:/etc/traefik/traefik.toml:ro"
-          - "{{ traefik_data_directory }}/tls-certs.toml:/etc/traefik/tls-certs.toml:ro"
           - "{{ traefik_data_directory }}/letsencrypt:/letsencrypt:rw"
-          - "/etc/traefik:/etc/traefik:rw"
           - "/var/run/docker.sock:/var/run/docker.sock:ro"
         env: "{{ traefik_environment_variables }}"
         restart_policy: unless-stopped
