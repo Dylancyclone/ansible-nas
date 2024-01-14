@@ -10,14 +10,14 @@
 - name: AutoShift Docker Container
   docker_container:
     name: autoshift
-    image: zacharmstrong/autoshift:latest
+    image: fabianschweinfurth/autoshift:latest
     pull: true
     volumes:
       - "{{ autoshift_data_directory }}/data:/autoshift/data:rw"
     env:
       SHIFT_USER: "dylanlathrum@gmail.com"
       SHIFT_PASS: "6nX4roaGMNw4T7c"
-      SHIFT_GAMES: "ttw bl3 blps bl2 bl"
+      SHIFT_GAMES: "ttw bl3 blps bl2 bl1"
       SHIFT_PLATFORMS: "steam"
     restart_policy: unless-stopped
     memory: "{{ autoshift_memory }}"
