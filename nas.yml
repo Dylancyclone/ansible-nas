@@ -156,6 +156,11 @@
       tags:
         - firefly
 
+    - role: fireshare
+      tags:
+        - fireshare
+      when: (fireshare_enabled | default(False))
+
     - role: freshrss
       tags:
         - freshrss

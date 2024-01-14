@@ -1,0 +1,38 @@
+---
+- name: Create fireshare Directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    # mode: 0755
+  with_items:
+    - "{{ fireshare_data_directory }}"
+    - "{{ fireshare_processed_directory }}"
+    - "{{ fireshare_videos_directory }}"
+
+- name: fireshare Docker Container
+  docker_container:
+    name: fireshare
+    image: shaneisrael/fireshare:latest
+    pull: true
+    volumes:
+      - "{{ fireshare_videos_directory }}:/videos:rw"
+      - "{{ fireshare_data_directory }}:/data:rw"
+      - "{{ fireshare_processed_directory }}:/processed:rw"
+    ports:
+      - "{{ fireshare_port }}:80"
+    env:
+      ADMIN_USERNAME: "{{ fireshare_username }}"
+      ADMIN_PASSWORD: "{{ fireshare_password }}"
+      SECRET_KEY: "{{ fireshare_key }}"
+      MINUTES_BETWEEN_VIDEO_SCANS: "5"
+      fireshare_UID: "{{ fireshare_user_id }}"
+      fireshare_GID: "{{ fireshare_group_id }}"
+    restart_policy: unless-stopped
+    memory: "{{ fireshare_memory }}"
+    labels:
+      traefik.enable: "{{ fireshare_available_externally }}"
+      traefik.http.routers.fireshare.rule: "Host(`{{ fireshare_hostname }}.{{ ansible_nas_domain }}`)"
+      traefik.http.routers.fireshare.tls.certresolver: "letsencrypt"
+      traefik.http.routers.fireshare.tls.domains[0].main: "{{ ansible_nas_domain }}"
+      traefik.http.routers.fireshare.tls.domains[0].sans: "*.{{ ansible_nas_domain }}"
+      traefik.http.services.fireshare.loadbalancer.server.port: "80"

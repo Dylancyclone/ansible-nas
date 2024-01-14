@@ -1,0 +1,26 @@
+---
+fireshare_enabled: false
+fireshare_available_externally: "false"
+
+# directories
+fireshare_videos_directory: "{{ documents_root }}"
+fireshare_data_directory: "{{ docker_home }}/fireshare/data"
+fireshare_processed_directory: "{{ docker_home }}/fireshare/processed"
+
+
+# network
+fireshare_port: "8097"
+fireshare_hostname: "fireshare"
+
+# login
+fireshare_username: "admin"
+fireshare_password: "admin"
+
+fireshare_key: "some_random_string"
+
+# uid/gid
+fireshare_user_id: "1000"
+fireshare_group_id: "1000"
+
+# specs
+fireshare_memory: 1g
