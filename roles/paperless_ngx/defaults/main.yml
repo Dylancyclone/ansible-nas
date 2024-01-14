@@ -55,8 +55,8 @@ paperless_tika_gotenberg_name: "gotenberg"
 paperless_tika_name: "tika"
 
 # uid/guid
-paperless_ng_user_id: "1000"
-paperless_ng_group_id: "1000"
+paperless_ng_user_id: "0"
+paperless_ng_group_id: "0"
 
 # settings
 paperless_ng_languages: "eng"
