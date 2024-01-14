@@ -1,0 +1,10 @@
+---
+cyberchef_enabled: false
+cyberchef_available_externally: "false"
+
+# network
+cyberchef_port: "8093"
+cyberchef_hostname: "cyberchef"
+
+# specs
+cyberchef_memory: 1g
