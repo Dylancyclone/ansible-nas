@@ -3,7 +3,7 @@ duplicati_enabled: false
 duplicati_available_externally: false
 
 # directories
-duplicati_data_directory: "{{ docker_home }}/duplicati/config"
+duplicati_data_directory: "{{ docker_home }}/duplicati/data"
 duplicati_tmp_directory: "/tmp"
 duplicati_backupsources_directory: "/mnt/backups"
 duplicati_bigdisk_directory: "/mnt/bigdisk"

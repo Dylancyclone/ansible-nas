@@ -16,7 +16,7 @@
         ports:
           - "{{ duplicati_port }}:8200"
         volumes:
-          - "{{ duplicati_data_directory }}:/config:rw"
+          - "{{ duplicati_data_directory }}:/data:rw"
           - "{{ samba_shares_root }}:/source/shares:{{ duplicati_data_permissions }}"
           - "{{ duplicati_backupsources_directory }}:/backupsources:ro"
           - "{{ duplicati_bigdisk_directory }}:/bigdisk:{{ duplicati_data_permissions }}"
