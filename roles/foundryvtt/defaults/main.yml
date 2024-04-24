@@ -1,0 +1,24 @@
+---
+foundryvtt_enabled: false
+foundryvtt_available_externally: false
+
+# directories
+foundryvtt_data_directory: "{{ docker_home }}/foundryvtt"
+
+# authentication
+foundryvtt_username: ""
+foundryvtt_password: ""
+foundryvtt_admin_key: ""
+
+foundryvtt_telemetry: "false"
+
+# network
+foundryvtt_port: "3003"
+foundryvtt_hostname: "foundryvtt"
+
+foundryvtt_memory: 1g
+
+# docker
+foundryvtt_user_id: "0"
+foundryvtt_group_id: "0"
+foundryvtt_version: latest

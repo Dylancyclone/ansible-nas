@@ -1,0 +1,48 @@
+---
+- name: Start Foundry VTT
+  block:
+    - name: Create Foundry VTT Directory
+      file:
+        path: "{{ item }}"
+        state: directory
+      with_items:
+        - "{{ foundryvtt_data_directory }}"
+
+    - name: Foundry VTT Docker Container
+      docker_container:
+        name: "foundryvtt"
+        image: "felddy/foundryvtt:{{ foundryvtt_version }}"
+        pull: true
+        ports:
+          - "{{ foundryvtt_port }}:30000"
+        volumes:
+          - "{{ foundryvtt_data_directory }}:/data:rw"
+          # - "{{ foundryvtt_data_directory }}/license.json:/data/Config/license.json:rw"
+          # - "{{ foundryvtt_data_directory }}/resourcesdata:/home/foundry/resources:rw"
+        env:
+          FOUNDRY_UID: "{{ foundryvtt_user_id }}"
+          FOUNDRY_GID: "{{ foundryvtt_group_id }}"
+          FOUNDRY_USERNAME: "{{ foundryvtt_username }}"
+          FOUNDRY_PASSWORD: "{{ foundryvtt_password }}"
+          FOUNDRY_ADMIN_KEY: "{{ foundryvtt_admin_key }}"
+          FOUNDRY_TELEMETRY: "{{ foundryvtt_telemetry }}"
+          FOUNDRY_HOSTNAME: "{{ foundryvtt_hostname }}.{{ ansible_nas_domain }}"
+          FOUNDRY_PROXY_SSL: "true"
+        restart_policy: unless-stopped
+        memory: "{{ foundryvtt_memory }}"
+        labels:
+          traefik.enable: "{{ foundryvtt_available_externally | string }}"
+          traefik.http.routers.foundryvtt.rule: "Host(`{{ foundryvtt_hostname }}.{{ ansible_nas_domain }}`)"
+          traefik.http.routers.foundryvtt.tls.certresolver: "letsencrypt"
+          traefik.http.routers.foundryvtt.tls.domains[0].main: "{{ ansible_nas_domain }}"
+          traefik.http.routers.foundryvtt.tls.domains[0].sans: "*.{{ ansible_nas_domain }}"
+          traefik.http.services.foundryvtt.loadbalancer.server.port: "30000"
+  when: foundryvtt_enabled
+
+- name: Stop Foundry VTT
+  block:
+    - name: Stop Foundry VTT
+      docker_container:
+        name: "foundryvtt"
+        state: absent
+  when: not foundryvtt_enabled

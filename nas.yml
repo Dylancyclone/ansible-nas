@@ -159,6 +159,11 @@
         - fireshare
       when: (fireshare_enabled | default(False))
 
+    - role: foundryvtt
+      tags:
+        - foundryvtt
+      when: (foundryvtt_enabled | default(False))
+
     - role: freshrss
       tags:
         - freshrss
