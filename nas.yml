@@ -150,6 +150,11 @@
       tags:
         - esphome
 
+    - role: feishin
+      tags:
+        - feishin
+      when: (feishin_enabled | default(False))
+
     - role: firefly
       tags:
         - firefly

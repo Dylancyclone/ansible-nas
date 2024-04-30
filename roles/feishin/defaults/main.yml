@@ -1,0 +1,12 @@
+---
+feishin_enabled: false
+feishin_available_externally: false
+
+# network
+feishin_port: "9180"
+feishin_hostname: "feishin"
+
+feishin_memory: 1g
+
+# docker
+feishin_version: latest
