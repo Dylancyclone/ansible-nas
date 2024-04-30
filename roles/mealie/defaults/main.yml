@@ -16,7 +16,7 @@ mealie_api_port: "9926"
 
 # docker
 mealie_container_name: "mealie"
-mealie_image_name: "hkotel/mealie"
+mealie_image_name: "ghcr.io/mealie-recipes/mealie"
 mealie_image_version: "latest"
 
 # specs
