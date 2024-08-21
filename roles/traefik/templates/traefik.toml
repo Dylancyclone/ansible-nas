@@ -44,6 +44,8 @@
 
       [certificatesResolvers.letsencrypt.acme.dnsChallenge]
         provider = "{{ traefik_dns_provider }}"
+        disablePropagationCheck = true
+        delayBeforeCheck = "60"
 
 [metrics]
   [metrics.prometheus]
