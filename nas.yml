@@ -433,6 +433,11 @@
       tags:
         - tautulli
 
+    - role: terraria
+      tags:
+        - terraria
+      when: (terraria_enabled | default(False))
+
     - role: thelounge
       tags:
         - thelounge

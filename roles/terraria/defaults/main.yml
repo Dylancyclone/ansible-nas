@@ -1,0 +1,26 @@
+---
+terraria_enabled: false
+terraria_available_externally: "false"
+
+# directories
+terraria_data_directory: "{{ docker_home }}/terraria"
+
+# network
+terraria_port: "7777"
+terraria_hostname: "terraria"
+
+terraria_mods_to_download: ""
+terraria_mods_enabled: ""
+terraria_motd: "A tModLoader server powered by Docker!"
+terraria_password: "docker"
+terraria_max_players: "8"
+terraria_world_name: "Docker"
+terraria_world_size: "3"
+terraria_difficulty: "1"
+
+# uid/gid
+terraria_user_id: "0"
+terraria_group_id: "0"
+
+# specs
+terraria_memory: 4g

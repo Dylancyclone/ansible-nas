@@ -1,0 +1,36 @@
+---
+- name: Create Terraria Directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    # mode: 0755
+  with_items:
+    - "{{ terraria_data_directory }}"
+
+- name: Terraria Docker Container
+  docker_container:
+    name: terraria
+    image: jacobsmile/tmodloader1.4:latest
+    pull: true
+    volumes:
+      - "{{ terraria_data_directory }}:/data:rw"
+    ports:
+      - "{{ terraria_port }}:7777"
+    env:
+      TMOD_AUTODOWNLOAD: "{{ terraria_mods_to_download }}"
+      TMOD_ENABLEDMODS: "{{ terraria_mods_enabled }}"
+      TMOD_MOTD: "{{ terraria_motd }}"
+      TMOD_PASS: "{{ terraria_password }}"
+      TMOD_MAXPLAYERS: "{{ terraria_max_players }}"
+      TMOD_WORLDNAME: "{{ terraria_world_name }}"
+      TMOD_WORLDSIZE: "{{ terraria_world_size }}"
+      TMOD_DIFFICULTY: "{{ terraria_difficulty }}"
+    restart_policy: unless-stopped
+    memory: "{{ terraria_memory }}"
+    labels:
+      traefik.enable: "{{ terraria_available_externally }}"
+      traefik.http.routers.terraria.rule: "Host(`{{ terraria_hostname }}.{{ ansible_nas_domain }}`)"
+      traefik.http.routers.terraria.tls.certresolver: "letsencrypt"
+      traefik.http.routers.terraria.tls.domains[0].main: "{{ ansible_nas_domain }}"
+      traefik.http.routers.terraria.tls.domains[0].sans: "*.{{ ansible_nas_domain }}"
+      traefik.http.services.terraria.loadbalancer.server.port: "80"
