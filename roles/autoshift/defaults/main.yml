@@ -4,5 +4,10 @@ autoshift_enabled: false
 # directories
 autoshift_data_directory: "{{ docker_home }}/autoshift"
 
+autoshift_username: ""
+autoshift_password: ""
+autoshift_games: "ttw bl3 blps bl2 bl1"
+autoshift_platform: "steam"
+
 # specs
 autoshift_memory: 1g
