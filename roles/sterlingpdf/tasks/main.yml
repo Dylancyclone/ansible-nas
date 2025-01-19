@@ -27,7 +27,7 @@
           traefik.http.routers.sterlingpdf.tls.certresolver: "letsencrypt"
           traefik.http.routers.sterlingpdf.tls.domains[0].main: "{{ ansible_nas_domain }}"
           traefik.http.routers.sterlingpdf.tls.domains[0].sans: "*.{{ ansible_nas_domain }}"
-          traefik.http.services.sterlingpdf.loadbalancer.server.port: "8200"
+          traefik.http.services.sterlingpdf.loadbalancer.server.port: "8080"
   when: sterlingpdf_enabled
 
 - name: Stop Sterling PDF
