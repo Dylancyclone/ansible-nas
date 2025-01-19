@@ -26,6 +26,8 @@
           ND_SCANSCHEDULE: "{{ navidrome_scan_schedule }}"
           ND_LOGLEVEL: "{{ navidrome_log_level }}"
           ND_SESSIONTIMEOUT: "{{ navidrome_session_timeout }}"
+          ND_LASTFM_APIKEY: "{{ navidrome_lastfm_apikey }}"
+          ND_LASTFM_SECRET: "{{ navidrome_lastfm_secret }}"
         restart_policy: unless-stopped
         memory: "{{ navidrome_memory }}"
         labels:

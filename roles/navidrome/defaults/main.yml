@@ -18,6 +18,10 @@ navidrome_image_version: "latest"
 # specs
 navidrome_memory: 1g
 
+# last.fm
+navidrome_lastfm_apikey: ""
+navidrome_lastfm_secret: ""
+
 # default config
 navidrome_scan_schedule: "@every 1m" # Cron syntax (https://en.wikipedia.org/wiki/Cron)
 navidrome_log_level: "info"
