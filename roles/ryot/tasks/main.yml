@@ -1,0 +1,68 @@
+---
+- name: Start ryot
+  block:
+    - name: Create Ryot directories
+      file:
+        path: "{{ item }}"
+        state: directory
+      with_items:
+        - "{{ ryot_data_directory }}/data"
+    - name: Create ryot network
+      docker_network:
+        name: "ryot-network"
+
+    - name: Create Ryot db Docker Container
+      docker_container:
+        name: "ryot-db"
+        image: postgres:16-alpine
+        pull: true
+        volumes:
+          - "{{ ryot_data_directory }}/data:/var/lib/postgresql/data:rw"
+        env:
+          POSTGRES_DB: "{{ ryot_postgres_db }}"
+          POSTGRES_USER: "{{ ryot_postgres_user }}"
+          POSTGRES_PASSWORD: "{{ ryot_postgres_password }}"
+          TZ: "{{ ansible_nas_timezone }}"
+        restart_policy: unless-stopped
+        memory: "{{ ryot_db_memory }}"
+        networks:
+          - name: "ryot-network"
+
+    - name: Create Ryot Docker Container
+      docker_container:
+        name: "ryot"
+        image: ignisda/ryot:v7
+        ports:
+          - "{{ ryot_port }}:8000"
+        restart_policy: unless-stopped
+        env:
+          DATABASE_URL: "postgres://postgres:postgres@ryot-db:5432/postgres"
+          SERVER_PRO_KEY: "{{ ryot_server_pro_key }}"
+          TZ: "{{ ansible_nas_timezone }}"
+        memory: "{{ ryot_memory }}"
+        networks:
+          - name: "ryot-network"
+        labels:
+          traefik.enable: "{{ ryot_available_externally | string }}"
+          traefik.http.routers.ryot.rule: "Host(`{{ ryot_hostname }}.{{ ansible_nas_domain }}`)"
+          traefik.http.routers.ryot.tls.certresolver: "letsencrypt"
+          traefik.http.routers.ryot.tls.domains[0].main: "{{ ansible_nas_domain }}"
+          traefik.http.routers.ryot.tls.domains[0].sans: "*.{{ ansible_nas_domain }}"
+          traefik.http.services.ryot.loadbalancer.server.port: "8000"
+  when: ryot_enabled
+
+- name: Stop ryot
+  block:
+    - name: Stop Ryot Docker Container
+      docker_container:
+        name: "ryot"
+        state: absent
+    - name: Stop Ryot DB Docker Container
+      docker_container:
+        name: "ryot-db"
+        state: absent
+    - name: Remove paperless_ngx network
+      docker_network:
+        name: "ryot-network"
+        state: absent
+  when: not ryot_enabled

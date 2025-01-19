@@ -1,0 +1,21 @@
+---
+ryot_enabled: false
+ryot_available_externally: false
+
+# directories
+ryot_data_directory: "{{ docker_home }}/ryot"
+
+ryot_server_pro_key: ""
+
+# db
+ryot_postgres_db: "postgres"
+ryot_postgres_user: "postgres"
+ryot_postgres_password: "postgres"
+
+# network
+ryot_port: "9006"
+ryot_hostname: "ryot"
+
+# specs
+ryot_memory: 1g
+ryot_db_memory: 1g

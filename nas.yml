@@ -394,6 +394,11 @@
         - readarr
       when: (readarr_enabled | default(False))
 
+    - role: ryot
+      tags:
+        - ryot
+      when: (ryot_enabled | default(False))
+
     - role: sickchill
       tags:
         - sickchill
