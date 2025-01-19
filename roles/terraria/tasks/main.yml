@@ -24,6 +24,7 @@
       TMOD_MAXPLAYERS: "{{ terraria_max_players }}"
       TMOD_WORLDNAME: "{{ terraria_world_name }}"
       TMOD_WORLDSIZE: "{{ terraria_world_size }}"
+      TMOD_WORLDSEED: "{{ terraria_world_seed }}"
       TMOD_DIFFICULTY: "{{ terraria_difficulty }}"
     restart_policy: unless-stopped
     memory: "{{ terraria_memory }}"

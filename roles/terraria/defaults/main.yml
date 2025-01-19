@@ -15,6 +15,7 @@ terraria_motd: "A tModLoader server powered by Docker!"
 terraria_password: "docker"
 terraria_max_players: "8"
 terraria_world_name: "Docker"
+terraria_world_seed: ""
 terraria_world_size: "3"
 terraria_difficulty: "1"
 
