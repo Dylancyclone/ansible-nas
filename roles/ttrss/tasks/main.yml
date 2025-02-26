@@ -1,0 +1,112 @@
+---
+- name: Start ttrss
+  block:
+    - name: Create TTRSS directories
+      file:
+        path: "{{ item }}"
+        state: directory
+      with_items:
+        - "{{ ttrss_data_directory }}/data"
+    - name: Create ttrss network
+      docker_network:
+        name: "ttrss-network"
+
+    - name: Create TTRSS db Docker Container
+      docker_container:
+        name: "ttrss-db"
+        image: postgres:15-alpine
+        pull: true
+        volumes:
+          - "{{ ttrss_data_directory }}/data:/var/lib/postgresql/data:rw"
+        env:
+          POSTGRES_DB: "{{ ttrss_postgres_db }}"
+          POSTGRES_USER: "{{ ttrss_postgres_user }}"
+          POSTGRES_PASSWORD: "{{ ttrss_postgres_password }}"
+          TZ: "{{ ansible_nas_timezone }}"
+        restart_policy: unless-stopped
+        memory: "{{ ttrss_db_memory }}"
+        networks:
+          - name: "ttrss-network"
+
+    - name: Create TTRSS Docker Container
+      docker_container:
+        name: "ttrss"
+        image: cthulhoo/ttrss-fpm-pgsql-static:latest
+        restart_policy: unless-stopped
+        env:
+          TTRSS_DB_HOST: "ttrss-db"
+          TTRSS_DB_NAME: "{{ ttrss_postgres_db }}"
+          TTRSS_DB_USER: "{{ ttrss_postgres_user }}"
+          TTRSS_DB_PASS: "{{ ttrss_postgres_password }}"
+          ADMIN_USER_PASS: "{{ ttrss_admin_password }}"
+        memory: "{{ ttrss_memory }}"
+        volumes:
+          - "{{ ttrss_app_data_directory }}/app:/var/www/html"
+          - "{{ ttrss_app_data_directory }}/config.d:/opt/tt-rss/config.d:ro"
+        networks:
+          - name: "ttrss-network"
+
+    - name: Create TTRSS Updater Docker Container
+      docker_container:
+        name: "ttrss-updater"
+        image: cthulhoo/ttrss-fpm-pgsql-static:latest
+        restart_policy: unless-stopped
+        env:
+          TTRSS_DB_HOST: "ttrss-db"
+          TTRSS_DB_NAME: "{{ ttrss_postgres_db }}"
+          TTRSS_DB_USER: "{{ ttrss_postgres_user }}"
+          TTRSS_DB_PASS: "{{ ttrss_postgres_password }}"
+        memory: "{{ ttrss_memory }}"
+        volumes:
+          - "{{ ttrss_app_data_directory }}/app:/var/www/html"
+          - "{{ ttrss_app_data_directory }}/config.d:/opt/tt-rss/config.d:ro"
+        command: /opt/tt-rss/updater.sh
+        networks:
+          - name: "ttrss-network"
+
+    - name: Create TTRSS Nginx Docker Container
+      docker_container:
+        name: "ttrss-nginx"
+        image: cthulhoo/ttrss-web-nginx:latest
+        ports:
+          - "{{ ttrss_port }}:80"
+        restart_policy: unless-stopped
+        env:
+          APP_UPSTREAM: "ttrss"
+        volumes:
+          - "{{ ttrss_app_data_directory }}/app:/var/www/html:ro"
+        memory: "{{ ttrss_memory }}"
+        networks:
+          - name: "ttrss-network"
+        labels:
+          traefik.enable: "{{ ttrss_available_externally | string }}"
+          traefik.http.routers.ttrss.rule: "Host(`{{ ttrss_hostname }}.{{ ansible_nas_domain }}`)"
+          traefik.http.routers.ttrss.tls.certresolver: "letsencrypt"
+          traefik.http.routers.ttrss.tls.domains[0].main: "{{ ansible_nas_domain }}"
+          traefik.http.routers.ttrss.tls.domains[0].sans: "*.{{ ansible_nas_domain }}"
+          traefik.http.services.ttrss.loadbalancer.server.port: "80"
+  when: ttrss_enabled
+
+- name: Stop ttrss
+  block:
+    - name: Stop TTRSS Docker Container
+      docker_container:
+        name: "ttrss"
+        state: absent
+    - name: Stop TTRSS DB Docker Container
+      docker_container:
+        name: "ttrss-db"
+        state: absent
+    - name: Stop TTRSS Updater Docker Container
+      docker_container:
+        name: "ttrss-updater"
+        state: absent
+    - name: Stop TTRSS Nginx Docker Container
+      docker_container:
+        name: "ttrss-nginx"
+        state: absent
+    - name: Remove paperless_ngx network
+      docker_network:
+        name: "ttrss-network"
+        state: absent
+  when: not ttrss_enabled

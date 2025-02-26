@@ -471,6 +471,10 @@
       tags:
         - transmission_with_openvpn
 
+    - role: ttrss
+      tags:
+        - ttrss
+
     - role: ubooquity
       tags:
         - ubooquity

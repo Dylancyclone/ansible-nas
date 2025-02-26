@@ -1,0 +1,22 @@
+---
+ttrss_enabled: false
+ttrss_available_externally: false
+
+# directories
+ttrss_data_directory: "{{ docker_home }}/ttrss/db"
+ttrss_app_data_directory: "{{ docker_home }}/ttrss/app"
+
+ttrss_admin_password: ""
+
+# db
+ttrss_postgres_db: "postgres"
+ttrss_postgres_user: "postgres"
+ttrss_postgres_password: "postgres"
+
+# network
+ttrss_port: "9007"
+ttrss_hostname: "ttrss"
+
+# specs
+ttrss_memory: 1g
+ttrss_db_memory: 1g
