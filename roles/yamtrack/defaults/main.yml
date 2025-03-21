@@ -1,0 +1,27 @@
+---
+yamtrack_enabled: false
+yamtrack_available_externally: false
+
+# directories
+yamtrack_data_directory: "{{ docker_home }}/yamtrack"
+
+# configuration
+yamtrack_tmdb_api: "" # A default is provided
+yamtrack_tmdb_nsfw: "False"
+yamtrack_mal_api: "" # A default is provided
+yamtrack_mal_nsfw: "False"
+yamtrack_mu_nsfw: "False"
+yamtrack_igdb_id: "" # A default is provided
+yamtrack_igdb_secret: "" # A default is provided
+yamtrack_igdb_nsfw: "False"
+yamtrack_simkl_id: "" # Only needed for importing media from Simkl, a default is provided
+yamtrack_simkl_secret: "" # Only needed for importing media from Simkl, a default is provided
+yamtrack_web_concurrency: "1" # Number of webserver processes
+
+# network
+yamtrack_port: "9008"
+yamtrack_hostname: "yamtrack"
+
+# specs
+yamtrack_memory: 1g
+yamtrack_redis_memory: 1g

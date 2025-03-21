@@ -1,0 +1,79 @@
+---
+- name: Start yamtrack
+  block:
+    - name: Create YamTrack directories
+      file:
+        path: "{{ item }}"
+        state: directory
+      with_items:
+        - "{{ yamtrack_data_directory }}/data"
+        - "{{ yamtrack_data_directory }}/redis"
+    - name: Create yamtrack network
+      docker_network:
+        name: "yamtrack-network"
+
+    - name: Create YamTrack redis Docker Container
+      docker_container:
+        name: "yamtrack-redis"
+        image: redis:7-alpine
+        pull: true
+        volumes:
+          - "{{ yamtrack_data_directory }}/redis:/data"
+        restart_policy: unless-stopped
+        memory: "{{ yamtrack_redis_memory }}"
+        networks:
+          - name: "yamtrack-network"
+
+    - name: Create YamTrack Docker Container
+      docker_container:
+        name: "yamtrack"
+        image: ghcr.io/fuzzygrim/yamtrack:latest
+        pull: true
+        ports:
+          - "{{ yamtrack_port }}:8000"
+        restart_policy: unless-stopped
+        volumes:
+          - "{{ yamtrack_data_directory }}/data:/yamtrack/db"
+        env:
+          SECRET: "longstring"
+          REDIS_URL: "redis://yamtrack-redis:6379"
+          URLS: "https://{{ yamtrack_hostname }}.{{ ansible_nas_domain }}"
+          # TMDB_API: "{{ yamtrack_tmdb_api }}"
+          TMDB_NSFW: "{{ yamtrack_tmdb_nsfw | string }}"
+          # MAL_API: "{{ yamtrack_mal_api }}"
+          MAL_NSFW: "{{ yamtrack_mal_nsfw | string }}"
+          MU_NSFW: "{{ yamtrack_mu_nsfw | string }}"
+          # IGDB_ID: "{{ yamtrack_igdb_id }}"
+          # IGDB_SECRET: "{{ yamtrack_igdb_secret }}"
+          IGDB_NSFW: "{{ yamtrack_igdb_nsfw | string }}"
+          # SIMKL_ID: "{{ yamtrack_simkl_id }}"
+          # SIMKL_SECRET: "{{ yamtrack_simkl_secret }}"
+          WEB_CONCURRENCY: "{{ yamtrack_web_concurrency | string }}"
+          TZ: "{{ ansible_nas_timezone }}"
+        memory: "{{ yamtrack_memory }}"
+        networks:
+          - name: "yamtrack-network"
+        labels:
+          traefik.enable: "{{ yamtrack_available_externally | string }}"
+          traefik.http.routers.yamtrack.rule: "Host(`{{ yamtrack_hostname }}.{{ ansible_nas_domain }}`)"
+          traefik.http.routers.yamtrack.tls.certresolver: "letsencrypt"
+          traefik.http.routers.yamtrack.tls.domains[0].main: "{{ ansible_nas_domain }}"
+          traefik.http.routers.yamtrack.tls.domains[0].sans: "*.{{ ansible_nas_domain }}"
+          traefik.http.services.yamtrack.loadbalancer.server.port: "8000"
+  when: yamtrack_enabled
+
+- name: Stop yamtrack
+  block:
+    - name: Stop YamTrack Docker Container
+      docker_container:
+        name: "yamtrack"
+        state: absent
+    - name: Stop YamTrack redis Docker Container
+      docker_container:
+        name: "yamtrack-redis"
+        state: absent
+    - name: Remove YamTrack network
+      docker_network:
+        name: "yamtrack-network"
+        state: absent
+  when: not yamtrack_enabled
