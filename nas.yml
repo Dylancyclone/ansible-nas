@@ -397,7 +397,6 @@
     - role: ryot
       tags:
         - ryot
-      when: (ryot_enabled | default(False))
 
     - role: sickchill
       tags:
@@ -502,6 +501,11 @@
     - role: woodpecker-ci
       tags:
         - woodpecker_ci
+
+    - role: yamtrack
+      tags:
+        - yamtrack
+      when: (yamtrack_enabled | default(False))
 
     - role: youtubedlmaterial
       tags:

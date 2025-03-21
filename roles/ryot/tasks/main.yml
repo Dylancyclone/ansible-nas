@@ -61,7 +61,7 @@
       docker_container:
         name: "ryot-db"
         state: absent
-    - name: Remove paperless_ngx network
+    - name: Remove Ryot network
       docker_network:
         name: "ryot-network"
         state: absent
