@@ -7,10 +7,25 @@
   with_items:
     - "{{ autoshift_data_directory }}/data"
 
+- name: AutoShift Scraper Docker Container
+  docker_container:
+    name: autoshift-scraper
+    image: ghcr.io/dylancyclone/autoshift-scraper:master
+    pull: true
+    volumes:
+      - "{{ autoshift_data_directory }}/data:/autoshift-scraper/data:rw"
+    env:
+      GITHUB_USER: "na"
+      GITHUB_REPO: "na"
+      GITHUB_TOKEN: "na"
+      PARSER_ARGS: "--verbose --schedule 2"
+    restart_policy: unless-stopped
+    memory: "{{ autoshift_memory }}"
+
 - name: AutoShift Docker Container
   docker_container:
     name: autoshift
-    image: ugoogalizer/autoshift:latest
+    image: ghcr.io/dylancyclone/autoshift:doco-update
     pull: true
     volumes:
       - "{{ autoshift_data_directory }}/data:/autoshift/data:rw"
