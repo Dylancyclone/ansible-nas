@@ -60,17 +60,14 @@
     - role: audiobookscraper
       tags:
         - audiobookscraper
-      when: (audiobookscraper_enabled | default(False))
 
     - role: audiobookshelf
       tags:
         - audiobookshelf
-      when: (audiobookshelf_enabled | default(False))
 
     - role: autoshift
       tags:
         - autoshift
-      when: (autoshift_enabled | default(False))
 
     - role: bazarr
       tags:
@@ -107,7 +104,6 @@
     - role: cyberchef
       tags:
         - cyberchef
-      when: (cyberchef_enabled | default(False))
 
     - role: dashy
       tags:
@@ -144,7 +140,6 @@
     - role: emulatorjs
       tags:
         - emulatorjs
-      when: (emulatorjs_enabled | default(False))
 
     - role: esphome
       tags:
@@ -153,7 +148,6 @@
     - role: feishin
       tags:
         - feishin
-      when: (feishin_enabled | default(False))
 
     - role: firefly
       tags:
@@ -162,12 +156,10 @@
     - role: fireshare
       tags:
         - fireshare
-      when: (fireshare_enabled | default(False))
 
     - role: foundryvtt
       tags:
         - foundryvtt
-      when: (foundryvtt_enabled | default(False))
 
     - role: freshrss
       tags:
@@ -180,7 +172,6 @@
     - role: gickup
       tags:
         - gickup
-      when: (gickup_enabled | default(False))
 
     - role: gitea
       tags:
@@ -257,7 +248,6 @@
     - role: memos
       tags:
         - memos
-      when: (memos_enabled | default(False))
 
     - role: minecraft-server
       tags:
@@ -314,7 +304,6 @@
     - role: nomad
       tags:
         - nomad
-      when: (nomad_enabled | default(False))
 
     - role: nzbget
       tags:
@@ -392,7 +381,6 @@
     - role: readarr
       tags:
         - readarr
-      when: (readarr_enabled | default(False))
 
     - role: ryot
       tags:
@@ -405,7 +393,6 @@
     - role: saltrim
       tags:
         - saltrim
-      when: (saltrim_enabled | default(False))
 
     - role: sonarr
       tags:
@@ -422,12 +409,10 @@
     - role: steam-games-grid
       tags:
         - steam-games-grid
-      when: (steam_games_grid_enabled | default(False))
 
     - role: sterlingpdf
       tags:
         - sterlingpdf
-      when: (sterlingpdf_enabled | default(False))
 
     - role: syncthing
       tags:
@@ -440,7 +425,6 @@
     - role: terraria
       tags:
         - terraria
-      when: (terraria_enabled | default(False))
 
     - role: thelounge
       tags:
@@ -505,7 +489,6 @@
     - role: yamtrack
       tags:
         - yamtrack
-      when: (yamtrack_enabled | default(False))
 
     - role: youtubedlmaterial
       tags:
