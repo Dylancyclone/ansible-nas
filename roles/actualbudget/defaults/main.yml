@@ -1,0 +1,13 @@
+---
+actualbudget_enabled: false
+actualbudget_available_externally: false
+
+# directories
+actualbudget_data_directory: "{{ docker_home }}/actualbudget"
+
+# network
+actualbudget_port: "5006"
+actualbudget_hostname: "actualbudget"
+
+# specs
+actualbudget_memory: 1g

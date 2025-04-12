@@ -1,0 +1,43 @@
+---
+- name: Start actualbudget
+  block:
+    - name: Create Actual Budget directories
+      file:
+        path: "{{ item }}"
+        state: directory
+      with_items:
+        - "{{ actualbudget_data_directory }}/data"
+
+
+    - name: Create Actual Budget Docker Container
+      docker_container:
+        name: "actualbudget"
+        image: actualbudget/actual-server:latest
+        ports:
+          - "{{ actualbudget_port }}:5006"
+        restart_policy: unless-stopped
+        volumes:
+          - "{{ actualbudget_data_directory }}/data:/data:rw"
+        memory: "{{ actualbudget_memory }}"
+        healthcheck:
+          test: ['CMD-SHELL', 'node src/scripts/health-check.js']
+          interval: 60s
+          timeout: 10s
+          retries: 3
+          start_period: 20s
+        labels:
+          traefik.enable: "{{ actualbudget_available_externally | string }}"
+          traefik.http.routers.actualbudget.rule: "Host(`{{ actualbudget_hostname }}.{{ ansible_nas_domain }}`)"
+          traefik.http.routers.actualbudget.tls.certresolver: "letsencrypt"
+          traefik.http.routers.actualbudget.tls.domains[0].main: "{{ ansible_nas_domain }}"
+          traefik.http.routers.actualbudget.tls.domains[0].sans: "*.{{ ansible_nas_domain }}"
+          traefik.http.services.actualbudget.loadbalancer.server.port: "5006"
+  when: actualbudget_enabled
+
+- name: Stop actualbudget
+  block:
+    - name: Stop actualbudget Docker Container
+      docker_container:
+        name: "actualbudget"
+        state: absent
+  when: not actualbudget_enabled

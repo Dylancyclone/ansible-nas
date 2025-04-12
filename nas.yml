@@ -53,6 +53,10 @@
     ###
     ### Applications
     ###
+    - role: actualbudget
+      tags:
+        - actualbudget
+
     - role: airsonic
       tags:
         - airsonic
