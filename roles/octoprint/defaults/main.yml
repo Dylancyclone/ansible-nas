@@ -6,7 +6,7 @@ octoprint_available_externally: false
 octoprint_data_directory: "{{ docker_home }}/octoprint"
 
 # network
-octoprint_port: "8095"
+octoprint_port: "8098"
 octoprint_hostname: "octoprint"
 
 # docker

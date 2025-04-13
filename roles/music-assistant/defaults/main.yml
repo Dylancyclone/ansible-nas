@@ -1,0 +1,17 @@
+---
+music_assistant_enabled: false
+music_assistant_available_externally: false
+
+# directories
+music_assistant_data_directory: "{{ docker_home }}/music_assistant"
+music_assistant_music_directory: "{{ music_root }}"
+music_assistant_audiobooks_directory: "{{ audiobooks_root }}"
+music_assistant_podcasts_directory: "{{ podcasts_root }}"
+
+# network
+music_assistant_port: "8095"
+music_assistant_squeezelite_port: "3483"
+music_assistant_hostname: "musicassistant"
+
+# specs
+music_assistant_memory: 1g

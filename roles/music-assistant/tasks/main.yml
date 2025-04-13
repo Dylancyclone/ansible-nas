@@ -1,0 +1,52 @@
+---
+- name: Start music_assistant
+  block:
+    - name: Create Music Assistant directories
+      file:
+        path: "{{ item }}"
+        state: directory
+      with_items:
+        - "{{ music_assistant_data_directory }}/data"
+        - "{{ music_assistant_music_directory }}"
+        - "{{ music_assistant_audiobooks_directory }}"
+        - "{{ music_assistant_podcasts_directory }}"
+
+
+    - name: Create Music Assistant Docker Container
+      docker_container:
+        name: "music-assistant-server"
+        image: ghcr.io/music-assistant/server:latest
+        network_mode: host
+        # ports:
+        #   - "{{ music_assistant_port }}:8095"
+        #   - "{{ music_assistant_squeezelite_port }}:3483"
+        #   - "{{ music_assistant_squeezelite_port }}:3483"
+        #   - "{{ music_assistant_squeezelite_port }}:3483"
+        restart_policy: unless-stopped
+        volumes:
+          - "{{ music_assistant_data_directory }}/data:/data:rw"
+          - "{{ music_assistant_music_directory }}/:/music:rw"
+          - "{{ music_assistant_audiobooks_directory }}:/audiobooks:rw"
+          - "{{ music_assistant_podcasts_directory }}:/podcasts:rw"
+        capabilities:
+          - SYS_ADMIN
+          - DAC_READ_SEARCH
+        security_opts:
+          - apparmor:unconfined
+        memory: "{{ music_assistant_memory }}"
+        labels:
+          traefik.enable: "{{ music_assistant_available_externally | string }}"
+          traefik.http.routers.music_assistant.rule: "Host(`{{ music_assistant_hostname }}.{{ ansible_nas_domain }}`)"
+          traefik.http.routers.music_assistant.tls.certresolver: "letsencrypt"
+          traefik.http.routers.music_assistant.tls.domains[0].main: "{{ ansible_nas_domain }}"
+          traefik.http.routers.music_assistant.tls.domains[0].sans: "*.{{ ansible_nas_domain }}"
+          traefik.http.services.music_assistant.loadbalancer.server.port: "8095"
+  when: music_assistant_enabled
+
+- name: Stop music_assistant
+  block:
+    - name: Stop music_assistant Docker Container
+      docker_container:
+        name: "music-assistant-server"
+        state: absent
+  when: not music_assistant_enabled
