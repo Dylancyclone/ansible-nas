@@ -1,0 +1,40 @@
+---
+dawarich_enabled: false
+dawarich_available_externally: false
+
+# directories
+dawarich_config_directory: "{{ docker_home }}/dawarich"
+dawarich_postgres_directory: "{{ dawarich_config_directory }}/db"
+dawarich_shared_directory: "{{ dawarich_config_directory }}/shared"
+dawarich_public_directory: "{{ dawarich_config_directory }}/public"
+dawarich_watched_directory: "{{ dawarich_config_directory }}/watched"
+dawarich_storage_directory: "{{ dawarich_config_directory }}/storage"
+
+# network
+dawarich_port: "3000"
+dawarich_hostname: "dawarich"
+dawarich_prometheus_port: "9394"
+dawarich_prometheus_exporter_enabled: "false"
+
+# postgres
+dawarich_postgres_user: "postgres"
+dawarich_postgres_password: "password"
+
+# container names
+dawarich_container_network_name: "dawarich_network"
+dawarich_container_name_redis: "dawarich_redis"
+dawarich_container_name_postgres: "dawarich_postgres"
+dawarich_container_name_app: "dawarich_app"
+dawarich_container_name_sidekiq: "dawarich_sidekiq"
+
+
+# settings
+dawarich_languages: "eng"
+dawarich_distance_unit: "km"
+dawarich_telemetry: "false" # More on telemetry: https://dawarich.app/docs/tutorials/telemetry
+
+# specs
+dawarich_app_memory: 1g
+dawarich_sidekiq_memory: 1g
+dawarich_postgres_memory: 1g
+dawarich_redis_memory: 1g

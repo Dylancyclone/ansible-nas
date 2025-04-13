@@ -113,6 +113,10 @@
       tags:
         - dashy
 
+    - role: dawarich
+      tags:
+        - dawarich
+
     - role: ddns_updater
       tags:
         - ddns_updater
