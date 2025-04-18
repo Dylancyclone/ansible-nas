@@ -422,9 +422,9 @@
       tags:
         - steam-games-grid
 
-    - role: sterlingpdf
+    - role: stirlingpdf
       tags:
-        - sterlingpdf
+        - stirlingpdf
 
     - role: syncthing
       tags:

@@ -1,0 +1,15 @@
+---
+stirlingpdf_enabled: false
+stirlingpdf_available_externally: false
+
+# directories
+stirlingpdf_data_directory: "{{ docker_home }}/stirlingpdf/config"
+
+# network
+stirlingpdf_port: "8203"
+stirlingpdf_hostname: "stirlingpdf"
+
+stirlingpdf_memory: 1g
+
+# docker
+stirlingpdf_container_name: stirlingpdf

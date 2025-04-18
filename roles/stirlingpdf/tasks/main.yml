@@ -1,0 +1,39 @@
+---
+- name: Start stirling PDF
+  block:
+    - name: Create stirling PDF Directory
+      file:
+        path: "{{ item }}"
+        state: directory
+      with_items:
+        - "{{ stirlingpdf_data_directory }}"
+
+    - name: stirling PDF Docker Container
+      docker_container:
+        name: "{{ stirlingpdf_container_name }}"
+        image: frooodle/s-pdf:latest
+        pull: true
+        ports:
+          - "{{ stirlingpdf_port }}:8080"
+        volumes:
+          - "{{ stirlingpdf_data_directory }}:/configs:rw"
+        env:
+          DOCKER_ENABLE_SECURITY: "false"
+        restart_policy: unless-stopped
+        memory: "{{ stirlingpdf_memory }}"
+        labels:
+          traefik.enable: "{{ stirlingpdf_available_externally | string }}"
+          traefik.http.routers.stirlingpdf.rule: "Host(`{{ stirlingpdf_hostname }}.{{ ansible_nas_domain }}`)"
+          traefik.http.routers.stirlingpdf.tls.certresolver: "letsencrypt"
+          traefik.http.routers.stirlingpdf.tls.domains[0].main: "{{ ansible_nas_domain }}"
+          traefik.http.routers.stirlingpdf.tls.domains[0].sans: "*.{{ ansible_nas_domain }}"
+          traefik.http.services.stirlingpdf.loadbalancer.server.port: "8080"
+  when: stirlingpdf_enabled
+
+- name: Stop stirling PDF
+  block:
+    - name: Stop stirling PDF
+      docker_container:
+        name: "{{ stirlingpdf_container_name }}"
+        state: absent
+  when: not stirlingpdf_enabled
