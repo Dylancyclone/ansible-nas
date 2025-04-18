@@ -1,7 +1,7 @@
 ---
 - name: CyberChef Docker Container
   docker_container:
-    name: CyberChef
+    name: cyberchef
     image: mpepping/cyberchef:latest
     pull: true
     ports:
