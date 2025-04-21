@@ -1,0 +1,16 @@
+---
+fastenhealth_enabled: false
+fastenhealth_available_externally: false
+
+# directories
+fastenhealth_data_directory: "{{ docker_home }}/fastenhealth"
+
+# network
+fastenhealth_port: "8101"
+fastenhealth_hostname: "fastenhealth"
+
+# specs
+fastenhealth_memory: 1g
+
+# docker
+fastenhealth_container_name: fastenhealth

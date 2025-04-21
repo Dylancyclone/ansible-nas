@@ -153,6 +153,10 @@
       tags:
         - esphome
 
+    - role: fastenhealth
+      tags:
+        - fastenhealth
+
     - role: feishin
       tags:
         - feishin
