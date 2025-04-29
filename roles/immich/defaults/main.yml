@@ -1,0 +1,29 @@
+---
+immich_enabled: false
+immich_available_externally: false
+
+immich_version: "release"
+# For hardware acceleration, add one of -[armnn, cuda, rocm, openvino, rknn] to the image tag.
+# Example value: "-cuda"
+immich_hardware_acceleration: ""
+
+# directories
+immich_config_directory: "{{ docker_home }}/immich"
+immich_postgres_directory: "{{ immich_config_directory }}/postgres"
+immich_upload_directory: "{{ immich_config_directory }}/upload"
+immich_model_cache_directory: "{{ immich_config_directory }}/model_cache"
+
+# network
+immich_port: "2283"
+immich_hostname: "immich"
+
+# postgres
+immich_postgres_db: "immich"
+immich_postgres_user: "postgres"
+immich_postgres_password: "postgres"
+
+# specs
+immich_ui_memory: 1g
+immich_postgres_memory: 1g
+immich_redis_memory: 1g
+immich_machine_learning_memory: 1g
