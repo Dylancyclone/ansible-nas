@@ -1,0 +1,40 @@
+---
+- name: Start Immich Selfie Timelapse
+  block:
+    - name: Create Immich Selfie Timelapse directories
+      file:
+        path: "{{ item }}"
+        state: directory
+      with_items:
+        - "{{ immich_selfie_timelapse_output_directory }}"
+
+    - name: Create Immich Selfie Timelapse Docker Container
+      docker_container:
+        name: "immich_selfie_timelapse"
+        image: arnaudcayrol/immich-selfie-timelapse
+        pull: true
+        volumes:
+          - "{{ immich_selfie_timelapse_output_directory }}:/app/output:rw"
+        ports:
+          - "{{ immich_selfie_timelapse_port }}:5000"
+        env:
+          IMMICH_BASE_URL: "{{ immich_selfie_timelapse_immich_address }}"
+          IMMICH_API_KEY: "{{ immich_selfie_timelapse_immich_api_key }}"
+        restart_policy: unless-stopped
+        memory: "{{ immich_selfie_timelapse_memory }}"
+        labels:
+          traefik.enable: "{{ immich_selfie_timelapse_available_externally | string }}"
+          traefik.http.routers.immich_selfie_timelapse.rule: "Host(`{{ immich_selfie_timelapse_hostname }}.{{ ansible_nas_domain }}`)"
+          traefik.http.routers.immich_selfie_timelapse.tls.certresolver: "letsencrypt"
+          traefik.http.routers.immich_selfie_timelapse.tls.domains[0].main: "{{ ansible_nas_domain }}"
+          traefik.http.routers.immich_selfie_timelapse.tls.domains[0].sans: "*.{{ ansible_nas_domain }}"
+          traefik.http.services.immich_selfie_timelapse.loadbalancer.server.port: "5000"
+  when: immich_selfie_timelapse_enabled
+
+- name: Stop Immich Selfie Timelapse
+  block:
+    - name: Stop Immich Selfie Timelapse Docker Container
+      docker_container:
+        name: "immich_selfie_timelapse"
+        state: absent
+  when: not immich_selfie_timelapse_enabled

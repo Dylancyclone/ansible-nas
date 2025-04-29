@@ -1,0 +1,16 @@
+---
+immich_selfie_timelapse_enabled: false
+immich_selfie_timelapse_available_externally: false
+
+immich_selfie_timelapse_immich_address: "https://localhost:{{ immich_port }}/api"
+immich_selfie_timelapse_immich_api_key: "abcdefghijklmnopqrstuvwxyz"
+
+# directories
+immich_selfie_timelapse_output_directory: "{{ docker_home }}/immich_selfie_timelapse/output"
+
+# network
+immich_selfie_timelapse_port: "5000"
+immich_selfie_timelapse_hostname: "immich_selfie_timelapse"
+
+# specs
+immich_selfie_timelapse_memory: 1g

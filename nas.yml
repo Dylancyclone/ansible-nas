@@ -233,6 +233,10 @@
       tags:
         - immich
 
+    - role: immich-selfie-timelapse
+      tags:
+        - immich-selfie-timelapse
+
     - role: jackett
       tags:
         - jackett
