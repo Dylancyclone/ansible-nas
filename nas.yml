@@ -450,6 +450,10 @@
       tags:
         - tautulli
 
+    - role: tdarr
+      tags:
+        - tdarr
+
     - role: terraria
       tags:
         - terraria

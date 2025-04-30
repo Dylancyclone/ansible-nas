@@ -1,0 +1,30 @@
+---
+tdarr_enabled: false
+tdarr_available_externally: false
+
+# directories
+tdarr_server_directory: "{{ docker_home }}/tdarr/server"
+tdarr_config_directory: "{{ docker_home }}/tdarr/config"
+tdarr_logs_directory: "{{ docker_home }}/tdarr/logs"
+tdarr_cache_directory: "{{ docker_home }}/tdarr/cache"
+tdarr_media_directory: "{{ samba_shares_root }}"
+
+# uid / gid
+tdarr_user_id: "0"
+tdarr_group_id: "0"
+
+# network
+tdarr_port: "8265"
+tdarr_hostname: "tdarr"
+
+# docker
+tdarr_container_name: "tdarr"
+tdarr_image_name: "ghcr.io/haveagitgat/tdarr"
+tdarr_image_version: "latest"
+
+tdarr_node_container_name: "tdarr-node"
+tdarr_node_image_name: "ghcr.io/haveagitgat/tdarr_node"
+tdarr_node_image_version: "latest"
+
+# specs
+tdarr_memory: 1g
