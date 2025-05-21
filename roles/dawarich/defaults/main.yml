@@ -29,8 +29,8 @@ dawarich_container_name_sidekiq: "dawarich_sidekiq"
 
 
 # settings
+dawarich_app_version: "latest"
 dawarich_languages: "eng"
-dawarich_distance_unit: "km"
 dawarich_telemetry: "false" # More on telemetry: https://dawarich.app/docs/tutorials/telemetry
 
 # specs

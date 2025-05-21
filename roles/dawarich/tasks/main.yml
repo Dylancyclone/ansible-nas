@@ -37,7 +37,7 @@
     - name: Create dawarich postgres Docker Container
       docker_container:
         name: "{{ dawarich_container_name_postgres }}"
-        image: postgis/postgis:14-3.5-alpine
+        image: postgis/postgis:17-3.5-alpine
         pull: true
         volumes:
           - "{{ dawarich_postgres_directory }}:/var/lib/postgresql/data"
@@ -59,7 +59,7 @@
     - name: Create dawarich UI Docker Container
       docker_container:
         name: "{{ dawarich_container_name_app }}"
-        image: freikin/dawarich:latest
+        image: "freikin/dawarich:{{ dawarich_app_version }}"
         pull: true
         volumes:
           - "{{ dawarich_public_directory }}:/var/app/public"
@@ -81,7 +81,6 @@
           APPLICATION_HOSTS: "{{ dawarich_hostname }}.{{ ansible_nas_domain }}"
           TIME_ZONE: "{{ ansible_nas_timezone }}"
           APPLICATION_PROTOCOL: "http"
-          DISTANCE_UNIT: "{{ dawarich_distance_unit }}"
           PROMETHEUS_EXPORTER_ENABLED: "{{ dawarich_prometheus_exporter_enabled }}"
           PROMETHEUS_EXPORTER_HOST: "0.0.0.0"
           PROMETHEUS_EXPORTER_PORT: "9394"
@@ -109,7 +108,7 @@
     - name: Create dawarich Sidekiq Docker Container
       docker_container:
         name: "{{ dawarich_container_name_sidekiq }}"
-        image: freikin/dawarich:latest
+        image: "freikin/dawarich:{{ dawarich_app_version }}"
         pull: true
         volumes:
           - "{{ dawarich_public_directory }}:/var/app/public"
@@ -127,7 +126,6 @@
           APPLICATION_HOSTS: "{{ dawarich_hostname }}.{{ ansible_nas_domain }}"
           BACKGROUND_PROCESSING_CONCURRENCY: "10"
           APPLICATION_PROTOCOL: "http"
-          DISTANCE_UNIT: "{{ dawarich_distance_unit }}"
           PROMETHEUS_EXPORTER_ENABLED: "{{ dawarich_prometheus_exporter_enabled }}"
           PROMETHEUS_EXPORTER_HOST: "dawarich_app"
           PROMETHEUS_EXPORTER_PORT: "9394"
