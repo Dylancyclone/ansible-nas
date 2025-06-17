@@ -19,7 +19,7 @@
     - name: Create dawarich redis broker
       docker_container:
         name: "{{ dawarich_container_name_redis }}"
-        image: redis:7.0-alpine
+        image: redis:7.4-alpine
         pull: true
         volumes:
           - "{{ dawarich_shared_directory }}:/data"
@@ -72,7 +72,7 @@
         command: ['bin/rails', 'server', '-p', '3000', '-b', '::']
         env:
           RAILS_ENV: "development"
-          REDIS_URL: "redis://{{ dawarich_container_name_redis }}:6379/0"
+          REDIS_URL: "redis://{{ dawarich_container_name_redis }}:6379"
           DATABASE_HOST: "{{ dawarich_container_name_postgres }}"
           DATABASE_USERNAME: "{{ dawarich_postgres_user }}"
           DATABASE_PASSWORD: "{{ dawarich_postgres_password }}"
@@ -84,7 +84,6 @@
           PROMETHEUS_EXPORTER_ENABLED: "{{ dawarich_prometheus_exporter_enabled }}"
           PROMETHEUS_EXPORTER_HOST: "0.0.0.0"
           PROMETHEUS_EXPORTER_PORT: "9394"
-          ENABLE_TELEMETRY: "{{ dawarich_telemetry }}" # More on telemetry: https://dawarich.app/docs/tutorials/telemetry
           SELF_HOSTED: "true"
 
         healthcheck:
@@ -118,7 +117,7 @@
         command: ['sidekiq']
         env:
           RAILS_ENV: "development"
-          REDIS_URL: "redis://{{ dawarich_container_name_redis }}:6379/0"
+          REDIS_URL: "redis://{{ dawarich_container_name_redis }}:6379"
           DATABASE_HOST: "{{ dawarich_container_name_postgres }}"
           DATABASE_USERNAME: "{{ dawarich_postgres_user }}"
           DATABASE_PASSWORD: "{{ dawarich_postgres_password }}"
@@ -129,11 +128,11 @@
           PROMETHEUS_EXPORTER_ENABLED: "{{ dawarich_prometheus_exporter_enabled }}"
           PROMETHEUS_EXPORTER_HOST: "dawarich_app"
           PROMETHEUS_EXPORTER_PORT: "9394"
-          ENABLE_TELEMETRY: "{{ dawarich_telemetry }}" # More on telemetry: https://dawarich.app/docs/tutorials/telemetry
           SELF_HOSTED: "true"
+          STORE_GEODATA: "true"
 
         healthcheck:
-          test: [ "CMD-SHELL", "bundle exec sidekiqmon processes | grep app" ]
+          test: [ "CMD-SHELL", "pgrep -f sidekiq" ]
           interval: 10s
           retries: 30
           start_period: 30s
