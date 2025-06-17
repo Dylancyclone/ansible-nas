@@ -29,7 +29,7 @@
     - name: Create Immich postgres Docker Container
       docker_container:
         name: "immich_postgres"
-        image: docker.io/tensorchord/pgvecto-rs:pg14-v0.2.0@sha256:739cdd626151ff1f796dc95a6591b55a714f341c737e27f045019ceabf8e8c52
+        image: ghcr.io/immich-app/postgres:14-vectorchord0.3.0-pgvectors0.2.0
         pull: true
         volumes:
           - "{{ immich_postgres_directory }}:/var/lib/postgresql/data"
@@ -38,13 +38,8 @@
           POSTGRES_USER: "{{ immich_postgres_user }}"
           POSTGRES_PASSWORD: "{{ immich_postgres_password }}"
           POSTGRES_INITDB_ARGS: '--data-checksums'
-        healthcheck:
-          test: ["CMD-SHELL", "pg_isready -d {{ immich_postgres_db }} -U {{ immich_postgres_user }}"]
-          interval: 5m
-          start_interval: 30s
-          start_period: 5m
-        command: >-
-          postgres -c shared_preload_libraries=vectors.so -c 'search_path="$$user", public, vectors' -c logging_collector=on -c max_wal_size=2GB -c shared_buffers=512MB -c wal_compression=on
+          # Uncomment the DB_STORAGE_TYPE: 'HDD' var if your database isn't stored on SSDs
+          # DB_STORAGE_TYPE: 'HDD'
         restart_policy: unless-stopped
         memory: "{{ immich_postgres_memory }}"
         networks:
