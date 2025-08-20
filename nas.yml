@@ -454,6 +454,10 @@
       tags:
         - tdarr
 
+    - role: teamspeak6
+      tags:
+        - teamspeak6
+
     - role: terraria
       tags:
         - terraria

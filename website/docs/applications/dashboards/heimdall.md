@@ -10,8 +10,8 @@ Heimdall Application Dashboard is a dashboard for all your web applications. It 
 
 Set `heimdall_enabled: true` in your `inventories/<your_inventory>/group_vars/nas.yml` file.
 
-The Heimdall web interface can be found at [http://ansible_nas_host_or_ip:10080](http://ansible_nas_host_or_ip:10080).
+The Heimdall web interface can be found at [http://ansible_nas_host_or_ip:10081](http://ansible_nas_host_or_ip:10081).
 
 ## Specific Configuration
 
-Heimdall defaults to port 10080 - some browsers block this port. Override `heimdall_port_http` to move it somewhere else.
+Heimdall defaults to port 10081 - some browsers block this port. Override `heimdall_port_http` to move it somewhere else.

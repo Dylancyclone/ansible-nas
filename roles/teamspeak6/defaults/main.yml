@@ -1,0 +1,21 @@
+---
+teamspeak6_enabled: false
+teamspeak6_available_externally: "false"
+
+# directories
+teamspeak6_data_directory: "{{ docker_home }}/teamspeak6"
+
+
+# network
+teamspeak6_voice_port: "9987"
+teamspeak6_filetransfer_port: "30033"
+teamspeak6_webquery_port: "10080"
+teamspeak6_hostname: "teamspeak6"
+
+
+# uid / gid
+teamspeak6_user_id: "0"
+teamspeak6_group_id: "0"
+
+# specs
+teamspeak6_memory: 1g

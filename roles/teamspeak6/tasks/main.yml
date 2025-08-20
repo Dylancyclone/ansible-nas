@@ -1,0 +1,33 @@
+---
+- name: Create Teamspeak 6 Directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    # mode: 0755
+  with_items:
+    - "{{ teamspeak6_data_directory }}"
+
+- name: Teamspeak 6 Docker Container
+  docker_container:
+    name: teamspeak6
+    image: teamspeaksystems/teamspeak6-server:latest
+    pull: true
+    volumes:
+      - "{{ teamspeak6_data_directory }}:/var/tsserver:rw"
+    network_mode: "host"
+    ports:
+      - "{{ teamspeak6_voice_port }}:9987"
+      - "{{ teamspeak6_filetransfer_port }}:30033"
+      - "{{ teamspeak6_webquery_port }}:10080"
+    env:
+      TSSERVER_LICENSE_ACCEPTED: "accept"
+    user: "{{ teamspeak6_user_id }}:{{ teamspeak6_group_id }}"
+    restart_policy: unless-stopped
+    memory: "{{ teamspeak6_memory }}"
+    labels:
+      traefik.enable: "{{ teamspeak6_available_externally }}"
+      traefik.http.routers.teamspeak6.rule: "Host(`{{ teamspeak6_hostname }}.{{ ansible_nas_domain }}`)"
+      traefik.http.routers.teamspeak6.tls.certresolver: "letsencrypt"
+      traefik.http.routers.teamspeak6.tls.domains[0].main: "{{ ansible_nas_domain }}"
+      traefik.http.routers.teamspeak6.tls.domains[0].sans: "*.{{ ansible_nas_domain }}"
+      traefik.http.services.teamspeak6.loadbalancer.server.port: "9987"
