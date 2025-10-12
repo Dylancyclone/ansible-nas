@@ -1,0 +1,24 @@
+---
+stash_enabled: false
+stash_available_externally: false
+
+# directories
+stash_data_directory: "{{ docker_home }}/stash"
+stash_content_directory: "{{ movies_root }}"
+
+# authentication
+stash_username: ""
+stash_password: ""
+stash_admin_key: ""
+
+stash_telemetry: "false"
+
+# network
+stash_port: "9999"
+stash_hostname: "stash"
+
+stash_memory: 1g
+
+# docker
+stash_user_id: "0"
+stash_group_id: "0"

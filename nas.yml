@@ -430,6 +430,10 @@
       tags:
         - speedtest-tracker
 
+    - role: stash
+      tags:
+        - stash
+
     - role: stats
       tags:
         - stats

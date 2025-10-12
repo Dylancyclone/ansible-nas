@@ -32,7 +32,7 @@
     - name: Create paperless_ngx postgres Docker Container
       docker_container:
         name: "{{ paperless_ng_container_name_postgres }}"
-        image: postgres:13
+        image: postgres:17
         container_default_behavior: compatibility
         pull: true
         volumes:

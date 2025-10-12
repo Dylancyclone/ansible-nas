@@ -1,0 +1,50 @@
+---
+- name: Start Stash
+  block:
+    - name: Create Stash Directory
+      file:
+        path: "{{ item }}"
+        state: directory
+      with_items:
+        - "{{ stash_data_directory }}"
+        - "{{ stash_content_directory }}"
+
+    - name: Stash Docker Container
+      docker_container:
+        name: "stash"
+        image: "stashapp/stash:latest"
+        pull: true
+        ports:
+          - "{{ stash_port }}:9999"
+        volumes:
+          - "/etc/localtime:/etc/localtime:ro"
+          - "{{ stash_data_directory }}/config:/root/.stash" # Keep configs, scrapers, and plugins here.
+          - "{{ stash_content_directory }}/data:/data" # Content
+          - "{{ stash_data_directory }}/metadata:/metadata"
+          - "{{ stash_data_directory }}/cache:/cache"
+          - "{{ stash_data_directory }}/blobs:/blobs" # (scene covers, images)
+          - "{{ stash_content_directory }}/generated:/generated"
+        env:
+          STASH_STASH: "/data/"
+          STASH_GENERATED: "/generated/"
+          STASH_METADATA: "/metadata/"
+          STASH_CACHE: "/cache/"
+          STASH_PORT: "{{ stash_port }}"
+        restart_policy: unless-stopped
+        memory: "{{ stash_memory }}"
+        labels:
+          traefik.enable: "{{ stash_available_externally | string }}"
+          traefik.http.routers.stash.rule: "Host(`{{ stash_hostname }}.{{ ansible_nas_domain }}`)"
+          traefik.http.routers.stash.tls.certresolver: "letsencrypt"
+          traefik.http.routers.stash.tls.domains[0].main: "{{ ansible_nas_domain }}"
+          traefik.http.routers.stash.tls.domains[0].sans: "*.{{ ansible_nas_domain }}"
+          traefik.http.services.stash.loadbalancer.server.port: "9999"
+  when: stash_enabled
+
+- name: Stop Stash
+  block:
+    - name: Stop Stash
+      docker_container:
+        name: "stash"
+        state: absent
+  when: not stash_enabled

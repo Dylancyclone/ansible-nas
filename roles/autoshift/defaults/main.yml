@@ -6,7 +6,7 @@ autoshift_data_directory: "{{ docker_home }}/autoshift"
 
 autoshift_username: ""
 autoshift_password: ""
-autoshift_games: "ttw bl3 blps bl2 bl1"
+autoshift_games: "bl4 ttw bl3 blps bl2 bl1"
 autoshift_platform: "steam"
 
 # specs
